@@ -15,6 +15,13 @@ function Login() {
     });
   };
 
+  const handleLoginButton = () => {
+    const stringifyEmail = JSON.stringify({ email: userInfo.email });
+    window.localStorage.setItem('mealsToken', '1');
+    window.localStorage.setItem('cocktailsToken', '1');
+    window.localStorage.setItem('user', stringifyEmail);
+  };
+
   useEffect(() => {
     const validateForm = () => {
       const { email, password } = userInfo;
@@ -55,6 +62,7 @@ function Login() {
           type="button"
           data-testid="login-submit-btn"
           disabled={ isButtonDisabled }
+          onClick={ handleLoginButton }
         >
           Enter
         </button>
