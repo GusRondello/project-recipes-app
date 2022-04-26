@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
-function Login() {
+function Login({ history }) {
   const [userInfo, setUserInfo] = useState({
     email: '',
     password: '',
@@ -20,6 +21,7 @@ function Login() {
     window.localStorage.setItem('mealsToken', '1');
     window.localStorage.setItem('cocktailsToken', '1');
     window.localStorage.setItem('user', stringifyEmail);
+    history.push('/foods');
   };
 
   useEffect(() => {
@@ -70,5 +72,9 @@ function Login() {
     </>
   );
 }
+
+Login.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default Login;
