@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { saveFilterRecipeFood, RequestFoodAPI } from '../redux/action';
+import PropTypes from 'prop-types';
+import { saveFilterRecipeFood,
+  RequestFoodAPI, RequestDrinkAPI, saveFilterRecipeDrink } from '../redux/action';
 
-function SearchBar() {
+function SearchBar({ recipeType }) {
   const [searchWord, changeSearchWord] = useState('');
   const [searchType, changeSearchType] = useState('');
   const dispatch = useDispatch();
@@ -16,13 +18,20 @@ function SearchBar() {
   };
 
   const handleSubmit = async () => {
+    console.log(recipeType);
     if (searchType === 'first-letter' && searchWord.length > 1) {
       global.alert('Your search must have only 1 (one) character');
     }
-    dispatch(saveFilterRecipeFood(searchWord, searchType));
+    if (recipeType === 'foods') {
+      dispatch(saveFilterRecipeFood(searchWord, searchType));
+      dispatch(RequestFoodAPI(searchType, searchWord));
+    }
+    if (recipeType === 'drinks') {
+      dispatch(saveFilterRecipeDrink(searchWord, searchType));
+      dispatch(RequestDrinkAPI(searchType, searchWord));
+    }
     changeSearchWord('');
     changeSearchType('');
-    dispatch(RequestFoodAPI(searchType, searchWord));
   };
 
   return (
@@ -73,5 +82,9 @@ function SearchBar() {
       </label>
     </>);
 }
+
+SearchBar.propTypes = {
+  recipeType: PropTypes.string.isRequired,
+};
 
 export default SearchBar;

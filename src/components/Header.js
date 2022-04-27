@@ -33,7 +33,7 @@ function Header({ pageTitle, componentName }) {
           : null}
       </header>
       {searchInput
-        && <SearchBar />}
+        && <SearchBar recipeType={ componentName } />}
     </>
   );
 }
