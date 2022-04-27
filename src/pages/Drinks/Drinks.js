@@ -1,8 +1,13 @@
 import React from 'react';
+import Header from '../../components/Header';
 
 function Drinks() {
+  const pageTitle = 'Drinks';
+  const componentName = 'drinks';
   return (
-    <div>Drinks</div>
+    <div>
+      <Header pageTitle={ pageTitle } componentName={ componentName } />
+    </div>
   );
 }
 

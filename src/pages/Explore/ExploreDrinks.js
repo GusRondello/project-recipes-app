@@ -1,8 +1,13 @@
 import React from 'react';
+import Header from '../../components/Header';
 
 function ExploreDrinks() {
+  const componentName = 'explore-drinks';
+  const pageTitle = 'Explore Drinks';
   return (
-    <div>ExploreDrinks</div>
+    <div>
+      <Header pageTitle={ pageTitle } componentName={ componentName } />
+    </div>
   );
 }
 
