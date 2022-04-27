@@ -13,26 +13,27 @@ function Header({ pageTitle, componentName }) {
   };
 
   return (
-    <header>
-      <Link to="/profile">
-        <img src={ profileIcon } data-testid="profile-top-btn" alt="Profile Icon" />
-      </Link>
-      <h1 data-testid="page-title">{ pageTitle }</h1>
-      {componentName === 'drinks'
+    <>
+      <header>
+        <Link to="/profile">
+          <img src={ profileIcon } data-testid="profile-top-btn" alt="Profile Icon" />
+        </Link>
+        <h1 data-testid="page-title">{ pageTitle }</h1>
+        {componentName === 'drinks'
       || componentName === 'foods'
       || componentName === 'explore-nationalities'
-        ? (
-          <button
-            type="button"
-            onClick={ updateButton }
-          >
-            <img data-testid="search-top-btn" src={ searchIcon } alt="Button Profile" />
-          </button>)
-        : null}
-
+          ? (
+            <button
+              type="button"
+              onClick={ updateButton }
+            >
+              <img data-testid="search-top-btn" src={ searchIcon } alt="Button Profile" />
+            </button>)
+          : null}
+      </header>
       {searchInput
-        && <input data-testid="search-input" />}
-    </header>
+        && <input data-testid="search-input" className="search-input" />}
+    </>
   );
 }
 
