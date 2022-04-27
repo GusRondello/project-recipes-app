@@ -1,8 +1,13 @@
 import React from 'react';
+import Header from '../components/Header';
 
 function DoneRecipes() {
+  const componentName = 'done-recipes';
+  const pageTitle = 'Done Recipes';
   return (
-    <div>DoneRecipes</div>
+    <div>
+      <Header pageTitle={ pageTitle } componentName={ componentName } />
+    </div>
   );
 }
 

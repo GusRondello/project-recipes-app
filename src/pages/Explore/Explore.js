@@ -1,8 +1,15 @@
 import React from 'react';
+import Header from '../../components/Header';
 
 function Explore() {
+  const componentName = 'explore';
+  const pageTitle = 'Explore';
   return (
-    <div>Explore</div>
+    <div>
+      <Header pageTitle={ pageTitle } componentName={ componentName } />
+      <button type="button">Explore Foods</button>
+      <button type="button">Explore Drinks</button>
+    </div>
   );
 }
 

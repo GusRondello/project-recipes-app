@@ -9,7 +9,9 @@ function Header({ pageTitle, componentName }) {
     <header>
       <img src={ profileIcon } data-testid="profile-top-btn" alt="Profile Icon" />
       <h1 data-testid="page-title">{ pageTitle }</h1>
-      {componentName === 'drinks' || componentName === 'foods'
+      {componentName === 'drinks'
+      || componentName === 'foods'
+      || componentName === 'explore-nationalities'
         ? <img src={ searchIcon } data-testid="search-top-btn" alt="Search Button" />
         : null}
     </header>

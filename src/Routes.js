@@ -21,21 +21,29 @@ import Profile from './pages/Profile';
 const Routes = () => (
   <Switch>
     <Route component={ Login } path="/" exact />
-    <Route component={ Foods } path="/foods" />
-    <Route component={ Drinks } path="/drinks" />
+    <Route component={ Foods } path="/foods" exact />
+    <Route component={ Drinks } path="/drinks" exact />
     <Route component={ FoodDetails } path="/foods/:id" />
     <Route component={ DrinkDetails } path="/drinks/:id" />
     <Route component={ FoodInProgress } path="/foods/:id/in-progress" />
     <Route component={ DrinkInProgress } path="/drinks/:id/in-progress" />
-    <Route component={ Explore } path="/explore" />
-    <Route component={ ExploreFoods } path="/explore/foods" />
-    <Route component={ ExploreDrinks } path="/explore/drinks" />
-    <Route component={ ExploreFoodIngredients } path="/explore/foods/ingredients" />
-    <Route component={ ExploreDrinkIngredients } path="/explore/drinks/ingredients" />
-    <Route component={ ExploreFoodNationalities } path="/explore/foods/nationalities" />
-    <Route component={ Profile } path="/profile" />
-    <Route component={ DoneRecipes } path="/done-recipes" />
-    <Route component={ FavoriteRecipes } path="/favorite-recipes" />
+    <Route component={ Explore } path="/explore" exact />
+    <Route component={ ExploreFoods } path="/explore/foods" exact />
+    <Route component={ ExploreDrinks } path="/explore/drinks" exact />
+    <Route component={ ExploreFoodIngredients } path="/explore/foods/ingredients" exact />
+    <Route
+      component={ ExploreDrinkIngredients }
+      path="/explore/drinks/ingredients"
+      exact
+    />
+    <Route
+      component={ ExploreFoodNationalities }
+      path="/explore/foods/nationalities"
+      exact
+    />
+    <Route component={ Profile } path="/profile" exact />
+    <Route component={ DoneRecipes } path="/done-recipes" exact />
+    <Route component={ FavoriteRecipes } path="/favorite-recipes" exact />
     <Route component={ NotFound } path="/*" />
   </Switch>
 );
