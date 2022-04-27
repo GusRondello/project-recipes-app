@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
+import FilterRecipeFood from './FilterRecipeFood';
 
-const rootReducer = combineReducers({ });
+const rootReducer = combineReducers({ FilterRecipeFood });
 
 export default rootReducer;
