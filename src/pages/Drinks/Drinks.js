@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 function Drinks() {
   const pageTitle = 'Drinks';
@@ -7,6 +8,7 @@ function Drinks() {
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
+      <Footer />
     </div>
   );
 }
