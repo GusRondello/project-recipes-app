@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveFilterRecipeFood,
   RequestFoodAPI, RequestDrinkAPI, saveFilterRecipeDrink } from '../redux/action';
 
 function SearchBar({ recipeType }) {
+  const RecipeFoodList = useSelector((state) => state.FilterRecipeFood.data);
+  // const RecipeDrinkList = useSelector((state) => state.FilterRecipeDrink.data);
   const [searchWord, changeSearchWord] = useState('');
   const [searchType, changeSearchType] = useState('');
   const dispatch = useDispatch();
@@ -24,10 +26,17 @@ function SearchBar({ recipeType }) {
     if (recipeType === 'foods') {
       dispatch(saveFilterRecipeFood(searchWord, searchType));
       dispatch(RequestFoodAPI(searchType, searchWord));
+      const word = 'recipes';
+      if (RecipeFoodList === null) {
+        global.alert(`Sorry, we haven't found any ${word} for these filters.`);
+      }
     }
     if (recipeType === 'drinks') {
       dispatch(saveFilterRecipeDrink(searchWord, searchType));
       dispatch(RequestDrinkAPI(searchType, searchWord));
+      // if (RecipeDrinkList === null) {
+      //   global.alert(`Sorry, we haven't found any ${word} for these filters.`);
+      // }
     }
     changeSearchWord('');
     changeSearchType('');

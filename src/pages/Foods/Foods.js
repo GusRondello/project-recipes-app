@@ -7,17 +7,19 @@ const DOZE = 12;
 
 function Foods() {
   const recipeFoods = useSelector((state) => state.FilterRecipeFood.data);
+  console.log(recipeFoods);
   const pageTitle = 'Foods';
   const componentName = 'foods';
 
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
-      {recipeFoods && (
+      {recipeFoods !== null && recipeFoods !== undefined ? (
         <FoodCard
           recipeFoods={ recipeFoods.length > DOZE
             ? recipeFoods.slice(0, DOZE) : recipeFoods }
-        />)}
+        />)
+        : null}
     </div>
   );
 }

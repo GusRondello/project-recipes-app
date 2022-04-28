@@ -1,4 +1,5 @@
-import { FILTER_DRINK, REQUEST_DRINKS, RECEIVE_DRINKS } from '../action/index';
+import { FILTER_DRINK,
+  REQUEST_DRINKS, RECEIVE_DRINKS } from '../action/index';
 
 const INITIAL_STATE = {
   isFetching: false,

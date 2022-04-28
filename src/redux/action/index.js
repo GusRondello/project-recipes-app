@@ -28,14 +28,17 @@ const getUrlFoods = (type, query) => {
   }
   return `https://www.themealdb.com/api/json/v1/1/search.php?f=${query}`;
 };
-
+const word = 'recipes';
 export function RequestFoodAPI(type, query) {
   const URL = getUrlFoods(type, query);
   return (dispatch) => {
     dispatch(requestFoods());
     return fetch(URL)
       .then((response) => response.json())
-      .then((recipes) => dispatch(receiveFoods(recipes.meals)));
+      .then((recipes) => dispatch(receiveFoods(recipes.meals)))
+      .catch(() => {
+        global.alert(`Sorry, we haven't found any ${word} for these filters.`);
+      });
   };
 }
 
@@ -54,7 +57,6 @@ export const receiveDrinks = (recipes) => ({
 });
 
 const getUrlDrinks = (type, query) => {
-  console.log(type);
   if (type === 'ingredient') {
     return `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${query}`;
   }
@@ -70,6 +72,9 @@ export function RequestDrinkAPI(type, query) {
     dispatch(requestDrinks());
     return fetch(URL)
       .then((response) => response.json())
-      .then((drink) => dispatch(receiveDrinks(drink.drinks)));
+      .then((drink) => dispatch(receiveDrinks(drink.drinks)))
+      .catch(() => {
+        global.alert(`Sorry, we haven't found any ${word} for these filters.`);
+      });
   };
 }
