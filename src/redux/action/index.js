@@ -28,17 +28,14 @@ const getUrlFoods = (type, query) => {
   }
   return `https://www.themealdb.com/api/json/v1/1/search.php?f=${query}`;
 };
-const word = 'recipes';
+
 export function RequestFoodAPI(type, query) {
   const URL = getUrlFoods(type, query);
   return (dispatch) => {
     dispatch(requestFoods());
     return fetch(URL)
       .then((response) => response.json())
-      .then((recipes) => dispatch(receiveFoods(recipes.meals)))
-      .catch(() => {
-        global.alert(`Sorry, we haven't found any ${word} for these filters.`);
-      });
+      .then((recipes) => dispatch(receiveFoods(recipes.meals)));
   };
 }
 
@@ -72,9 +69,6 @@ export function RequestDrinkAPI(type, query) {
     dispatch(requestDrinks());
     return fetch(URL)
       .then((response) => response.json())
-      .then((drink) => dispatch(receiveDrinks(drink.drinks)))
-      .catch(() => {
-        global.alert(`Sorry, we haven't found any ${word} for these filters.`);
-      });
+      .then((drink) => dispatch(receiveDrinks(drink.drinks)));
   };
 }

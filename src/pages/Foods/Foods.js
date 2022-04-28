@@ -7,7 +7,6 @@ const DOZE = 12;
 
 function Foods() {
   const recipeFoods = useSelector((state) => state.FilterRecipeFood.data);
-  console.log(recipeFoods);
   const pageTitle = 'Foods';
   const componentName = 'foods';
 

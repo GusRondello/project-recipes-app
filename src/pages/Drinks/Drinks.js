@@ -13,11 +13,12 @@ function Drinks() {
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
-      {recipeDrinks && (
+      {recipeDrinks !== undefined && recipeDrinks !== null ? (
         <DrinkCard
           recipeDrinks={ recipeDrinks.length > DOZE
             ? recipeDrinks.slice(0, DOZE) : recipeDrinks }
-        />)}
+        />)
+        : null}
     </div>
   );
 }
