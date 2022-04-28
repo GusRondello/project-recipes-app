@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 import '../styles/Header.css';
 
 function Header({ pageTitle, componentName }) {
@@ -32,7 +33,7 @@ function Header({ pageTitle, componentName }) {
           : null}
       </header>
       {searchInput
-        && <input data-testid="search-input" className="search-input" />}
+        && <SearchBar recipeType={ componentName } />}
     </>
   );
 }
