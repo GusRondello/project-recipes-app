@@ -18,7 +18,6 @@ function SearchBar({ recipeType }) {
   };
 
   const handleSubmit = async () => {
-    console.log(recipeType);
     if (searchType === 'first-letter' && searchWord.length > 1) {
       global.alert('Your search must have only 1 (one) character');
     }

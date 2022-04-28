@@ -54,6 +54,7 @@ export const receiveDrinks = (recipes) => ({
 });
 
 const getUrlDrinks = (type, query) => {
+  console.log(type);
   if (type === 'ingredient') {
     return `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${query}`;
   }
