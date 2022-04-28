@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import FoodCard from '../../components/FoodCard';
 
@@ -19,6 +20,7 @@ function Foods() {
             ? recipeFoods.slice(0, DOZE) : recipeFoods }
         />)
         : null}
+      <Footer />
     </div>
   );
 }
