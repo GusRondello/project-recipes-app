@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 function FoodCard({ recipeFoods }) {
   return (
     <div>
+      {recipeFoods.length === 1 && <Redirect to={ `/foods/${recipeFoods[0].idMeal}` } />}
       { recipeFoods.map((recipe, index) => (
         <Link to={ `/foods/${recipe.idMeal}` } key={ recipe.idMeal }>
           <div data-testid={ `${index}-recipe-card` }>

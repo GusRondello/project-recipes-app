@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   isFetching: false,
   searchWord: '',
   searchType: '',
+  data: [],
 };
 
 const FilterRecipeFood = (state = INITIAL_STATE, action) => {
