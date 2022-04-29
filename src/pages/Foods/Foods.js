@@ -10,18 +10,18 @@ const CINCO = 5;
 function Foods() {
   const [initialRecipes, changeInitialRecipes] = useState([]);
   const [categories, changeInitialCategories] = useState([]);
-  const [categoriyIsSelected, changeSelectCategory] = useState(false);
+  const [selectedCategory, changeSelectedCategory] = useState('');
   const recipeFoods = useSelector((state) => state.FilterRecipeFood.data);
   const pageTitle = 'Foods';
   const componentName = 'foods';
 
-  useEffect(() => {
-    const getFirstRecipeMeals = async () => {
-      const request = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-      const recipes = await request.json();
-      changeInitialRecipes(recipes.meals.slice(0, DOZE));
-    };
+  const getFirstRecipeMeals = async () => {
+    const request = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    const recipes = await request.json();
+    changeInitialRecipes(recipes.meals.slice(0, DOZE));
+  };
 
+  useEffect(() => {
     const getFirstCategories = async () => {
       const request = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
       const response = await request.json();
@@ -32,16 +32,28 @@ function Foods() {
     getFirstCategories();
   }, []);
 
+  useEffect(() => {
+
+  }, [selectedCategory]);
+
   const getRecipeByCategory = async (categoryName) => {
-    console.log(categoryName);
     const request = await fetch(
       `https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoryName}`,
     );
     const response = await request.json();
     const recipes = response.meals.slice(0, DOZE);
     changeInitialRecipes(recipes);
-    changeSelectCategory(!categoriyIsSelected);
-    console.log(categoriyIsSelected);
+  };
+
+  const handleClick = ({ target }) => {
+    const category = target.name;
+    if (selectedCategory === '') {
+      changeSelectedCategory(category);
+      getRecipeByCategory(category);
+    } else {
+      getFirstRecipeMeals();
+      changeSelectedCategory('');
+    }
   };
 
   return (
@@ -55,8 +67,9 @@ function Foods() {
               <button
                 type="button"
                 key={ index }
+                name={ categoryName }
                 data-testid={ `${categoryName}-category-filter` }
-                onClick={ () => getRecipeByCategory(categoryName) }
+                onClick={ handleClick }
               >
                 {categoryName}
               </button>))}
