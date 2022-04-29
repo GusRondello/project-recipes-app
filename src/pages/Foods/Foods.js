@@ -10,6 +10,7 @@ const CINCO = 5;
 function Foods() {
   const [initialRecipes, changeInitialRecipes] = useState([]);
   const [categories, changeInitialCategories] = useState([]);
+  const [categoriyIsSelected, changeSelectCategory] = useState(false);
   const recipeFoods = useSelector((state) => state.FilterRecipeFood.data);
   const pageTitle = 'Foods';
   const componentName = 'foods';
@@ -31,6 +32,18 @@ function Foods() {
     getFirstCategories();
   }, []);
 
+  const getRecipeByCategory = async (categoryName) => {
+    console.log(categoryName);
+    const request = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoryName}`,
+    );
+    const response = await request.json();
+    const recipes = response.meals.slice(0, DOZE);
+    changeInitialRecipes(recipes);
+    changeSelectCategory(!categoriyIsSelected);
+    console.log(categoriyIsSelected);
+  };
+
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
@@ -43,6 +56,7 @@ function Foods() {
                 type="button"
                 key={ index }
                 data-testid={ `${categoryName}-category-filter` }
+                onClick={ () => getRecipeByCategory(categoryName) }
               >
                 {categoryName}
               </button>))}
