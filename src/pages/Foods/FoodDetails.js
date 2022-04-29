@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import RecomendationCarousel from '../../components/RecomendationCarousel';
+import '../../styles/FoodDetails.css';
 
 function FoodDetails() {
   const [recipe, setRecipe] = useState([]);
+  const [recomendation, setRecomendation] = useState([]);
   const { id } = useParams();
   const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
   const {
@@ -22,6 +25,20 @@ function FoodDetails() {
       };
       fetchRecipeById();
     }, [URL],
+  );
+
+  useEffect(
+    () => {
+      const fetchRecomendation = async () => {
+        const recomendationURL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+        const response = await fetch(recomendationURL);
+        const { drinks } = await response.json();
+        const FIVE = 5;
+        const firstSixDrinks = drinks.filter((drink) => drinks.indexOf(drink) <= FIVE);
+        setRecomendation(firstSixDrinks);
+      };
+      fetchRecomendation();
+    }, [],
   );
 
   const getIngredientsAndMeasure = () => {
@@ -47,7 +64,12 @@ function FoodDetails() {
   };
   return (
     <section>
-      <img src={ strMealThumb } alt={ strMeal } data-testid="recipe-photo" />
+      <img
+        className="meal_image"
+        src={ strMealThumb }
+        alt={ strMeal }
+        data-testid="recipe-photo"
+      />
       <h2 data-testid="recipe-title">{ strMeal }</h2>
       <button type="button" data-testid="share-btn">Share</button>
       <button type="button" data-testid="favorite-btn">Favorite</button>
@@ -61,7 +83,7 @@ function FoodDetails() {
         data-testid="video"
         src={ String(strYoutube).replace('watch?v=', 'embed/') }
       />
-      <div data-testid="0-recomendation-card" />
+      <RecomendationCarousel recomendations={ recomendation } />
       <button type="button" data-testid="start-recipe-btn">Start Recipe</button>
     </section>
   );

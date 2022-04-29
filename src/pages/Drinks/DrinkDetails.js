@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import RecomendationCarousel from '../../components/RecomendationCarousel';
 
 function DrinkDetails() {
   const [drink, setDrink] = useState([]);
+  const [recomendation, setRecomendation] = useState([]);
   const { id } = useParams();
   const URL = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
 
@@ -16,6 +18,20 @@ function DrinkDetails() {
       };
       fetchDrinkById();
     }, [URL],
+  );
+
+  useEffect(
+    () => {
+      const fetchRecomendation = async () => {
+        const recomendationURL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+        const response = await fetch(recomendationURL);
+        const { meals } = await response.json();
+        const FIVE = 5;
+        const firstSixMeals = meals.filter((meal) => meals.indexOf(meal) <= FIVE);
+        setRecomendation(firstSixMeals);
+      };
+      fetchRecomendation();
+    }, [],
   );
 
   const {
@@ -49,14 +65,19 @@ function DrinkDetails() {
 
   return (
     <section>
-      <img src={ strDrinkThumb } alt={ strDrink } data-testid="recipe-photo" />
+      <img
+        className="meal_image"
+        src={ strDrinkThumb }
+        alt={ strDrink }
+        data-testid="recipe-photo"
+      />
       <h2 data-testid="recipe-title">{ strDrink }</h2>
       <button type="button" data-testid="share-btn">Share</button>
       <button type="button" data-testid="favorite-btn">Favorite</button>
       <p data-testid="recipe-category">{ strAlcoholic }</p>
       <ul>{ getIngredientsAndMeasure() }</ul>
       <p data-testid="instructions">{ strInstructions }</p>
-      <div data-testid="0-recomendation-card" />
+      <RecomendationCarousel recomendations={ recomendation } />
       <button type="button" data-testid="start-recipe-btn">Start Recipe</button>
     </section>
   );
