@@ -35,7 +35,14 @@ function Drinks() {
   }, []);
 
   useEffect(() => {
-  }, [selectedCategory]);
+    if (recipeDrinks !== undefined && recipeDrinks !== null) {
+      if (recipeDrinks.length > DOZE) {
+        changeInitialRecipes(recipeDrinks.slice(0, DOZE));
+      } else {
+        changeInitialRecipes(recipeDrinks);
+      }
+    }
+  }, [selectedCategory, recipeDrinks]);
 
   const getRecipeByCategory = async (categoryName) => {
     const request = await fetch(
@@ -87,13 +94,7 @@ function Drinks() {
                 {categoryName}
               </button>))}
       </nav>
-
-      {recipeDrinks !== undefined && recipeDrinks !== null ? (
-        <DrinkCard
-          recipeDrinks={ recipeDrinks.length > DOZE
-            ? recipeDrinks.slice(0, DOZE) : recipeDrinks }
-        />)
-        : <DrinkCard category={ selectedCategory } recipeDrinks={ initialRecipes } />}
+      <DrinkCard category={ selectedCategory } recipeDrinks={ initialRecipes } />
       <Footer />
     </div>
   );

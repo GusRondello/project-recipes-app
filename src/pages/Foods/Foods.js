@@ -33,7 +33,14 @@ function Foods() {
   }, []);
 
   useEffect(() => {
-  }, [selectedCategory]);
+    if (recipeFoods !== undefined && recipeFoods !== null) {
+      if (recipeFoods.length > DOZE) {
+        changeInitialRecipes(recipeFoods.slice(0, DOZE));
+      } else {
+        changeInitialRecipes(recipeFoods);
+      }
+    }
+  }, [selectedCategory, recipeFoods]);
 
   const getRecipeByCategory = async (categoryName) => {
     const request = await fetch(
@@ -85,13 +92,7 @@ function Foods() {
                 {categoryName}
               </button>))}
       </nav>
-
-      {recipeFoods !== null && recipeFoods !== undefined ? (
-        <FoodCard
-          recipeFoods={ recipeFoods.length > DOZE
-            ? recipeFoods.slice(0, DOZE) : recipeFoods }
-        />)
-        : <FoodCard category={ selectedCategory } recipeFoods={ initialRecipes } />}
+      <FoodCard category={ selectedCategory } recipeFoods={ initialRecipes } />
       <Footer />
     </div>
   );
