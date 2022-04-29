@@ -10,17 +10,19 @@ const CINCO = 5;
 function Drinks() {
   const [initialRecipes, changeInitialRecipes] = useState([]);
   const [categories, changeInitialCategories] = useState([]);
+  const [selectedCategory, changeSelectedCategory] = useState('');
+
   const recipeDrinks = useSelector((state) => state.FilterRecipeDrink.data);
   const pageTitle = 'Drinks';
   const componentName = 'drinks';
 
-  useEffect(() => {
-    const getFirstRecipeMeals = async () => {
-      const request = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
-      const recipes = await request.json();
-      changeInitialRecipes(recipes.drinks.slice(0, DOZE));
-    };
+  const getFirstRecipeMeals = async () => {
+    const request = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+    const recipes = await request.json();
+    changeInitialRecipes(recipes.drinks.slice(0, DOZE));
+  };
 
+  useEffect(() => {
     const getFirstCategories = async () => {
       const request = await fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
       const response = await request.json();
@@ -31,6 +33,29 @@ function Drinks() {
     getFirstRecipeMeals();
     getFirstCategories();
   }, []);
+
+  useEffect(() => {
+  }, [selectedCategory]);
+
+  const getRecipeByCategory = async (categoryName) => {
+    const request = await fetch(
+      `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${categoryName}`,
+    );
+    const response = await request.json();
+    const recipes = response.drinks.slice(0, DOZE);
+    changeInitialRecipes(recipes);
+  };
+
+  const handleClick = ({ target }) => {
+    const category = target.name;
+    if (selectedCategory === '') {
+      changeSelectedCategory(category);
+      getRecipeByCategory(category);
+    } else {
+      getFirstRecipeMeals();
+      changeSelectedCategory('');
+    }
+  };
 
   return (
     <div>
@@ -43,7 +68,9 @@ function Drinks() {
               <button
                 type="button"
                 key={ index }
+                name={ categoryName }
                 data-testid={ `${categoryName}-category-filter` }
+                onClick={ handleClick }
               >
                 {categoryName}
               </button>))}
@@ -54,7 +81,7 @@ function Drinks() {
           recipeDrinks={ recipeDrinks.length > DOZE
             ? recipeDrinks.slice(0, DOZE) : recipeDrinks }
         />)
-        : <DrinkCard recipeDrinks={ initialRecipes } />}
+        : <DrinkCard category={ selectedCategory } recipeDrinks={ initialRecipes } />}
       <Footer />
     </div>
   );

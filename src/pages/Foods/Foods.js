@@ -33,7 +33,6 @@ function Foods() {
   }, []);
 
   useEffect(() => {
-
   }, [selectedCategory]);
 
   const getRecipeByCategory = async (categoryName) => {
@@ -80,7 +79,7 @@ function Foods() {
           recipeFoods={ recipeFoods.length > DOZE
             ? recipeFoods.slice(0, DOZE) : recipeFoods }
         />)
-        : <FoodCard recipeFoods={ initialRecipes } />}
+        : <FoodCard category={ selectedCategory } recipeFoods={ initialRecipes } />}
       <Footer />
     </div>
   );

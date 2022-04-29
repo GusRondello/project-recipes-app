@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import '../styles/FoodCard.css';
 
-function FoodCard({ recipeFoods }) {
+function FoodCard({ category, recipeFoods }) {
   return (
     <div className="page-recipe-food">
-      {recipeFoods.length === 1 && <Redirect to={ `/foods/${recipeFoods[0].idMeal}` } />}
+      {recipeFoods.length === 1 && category === ''
+        ? <Redirect to={ `/foods/${recipeFoods[0].idMeal}` } />
+        : null}
       { recipeFoods.map((recipe, index) => (
         <Link to={ `/foods/${recipe.idMeal}` } key={ recipe.idMeal }>
           <div
@@ -34,6 +36,7 @@ function FoodCard({ recipeFoods }) {
 
 FoodCard.propTypes = {
   recipeFoods: PropTypes.arrayOf(PropTypes.objectOf).isRequired,
+  category: PropTypes.string.isRequired,
 };
 
 export default FoodCard;
