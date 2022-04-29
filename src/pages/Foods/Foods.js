@@ -5,9 +5,11 @@ import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 
 const DOZE = 12;
+const CINCO = 5;
 
 function Foods() {
   const [initialRecipes, changeInitialRecipes] = useState([]);
+  const [categories, changeInitialCategories] = useState([]);
   const recipeFoods = useSelector((state) => state.FilterRecipeFood.data);
   const pageTitle = 'Foods';
   const componentName = 'foods';
@@ -18,12 +20,34 @@ function Foods() {
       const recipes = await request.json();
       changeInitialRecipes(recipes.meals.slice(0, DOZE));
     };
+
+    const getFirstCategories = async () => {
+      const request = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+      const response = await request.json();
+      const firstCategories = response.meals.slice(0, CINCO);
+      changeInitialCategories(firstCategories.map((category) => category.strCategory));
+    };
     getFirstRecipeMeals();
+    getFirstCategories();
   }, []);
 
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
+
+      <nav>
+        {categories
+          && categories
+            .map((categoryName, index) => (
+              <button
+                type="button"
+                key={ index }
+                data-testid={ `${categoryName}-category-filter` }
+              >
+                {categoryName}
+              </button>))}
+      </nav>
+
       {recipeFoods !== null && recipeFoods !== undefined ? (
         <FoodCard
           recipeFoods={ recipeFoods.length > DOZE
