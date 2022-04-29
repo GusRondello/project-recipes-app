@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import RecomendationCarousel from '../../components/RecomendationCarousel';
 import '../../styles/FoodDetails.css';
@@ -6,9 +7,14 @@ import '../../styles/FoodDetails.css';
 function FoodDetails() {
   const [recipe, setRecipe] = useState([]);
   const [recomendation, setRecomendation] = useState([]);
+  const [isRecipeDone, setRecipeDone] = useState(false);
+  const doneRecipes = useSelector((state) => state.Recipes.doneRecipes);
+  const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
+  const inProgressIds = Object.keys(inProgressRecipes?.meals || {});
   const { id } = useParams();
   const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
   const {
+    idMeal,
     strMealThumb,
     strMeal,
     strCategory,
@@ -41,6 +47,13 @@ function FoodDetails() {
     }, [],
   );
 
+  useEffect(
+    () => {
+      const checkIfIsDone = doneRecipes.some((item) => item.id === idMeal);
+      setRecipeDone(checkIfIsDone);
+    }, [idMeal, doneRecipes],
+  );
+
   const getIngredientsAndMeasure = () => {
     const twenty = 20;
     const ingredientsAndMeasure = [];
@@ -62,6 +75,7 @@ function FoodDetails() {
     }
     return ingredientsAndMeasure;
   };
+
   return (
     <section>
       <img
@@ -84,7 +98,22 @@ function FoodDetails() {
         src={ String(strYoutube).replace('watch?v=', 'embed/') }
       />
       <RecomendationCarousel recomendations={ recomendation } />
-      <button type="button" data-testid="start-recipe-btn">Start Recipe</button>
+      {
+        !isRecipeDone && (
+          <button
+            className="start_recipe_btn"
+            type="button"
+            data-testid="start-recipe-btn"
+          >
+            {
+              inProgressIds
+                .some((inProgressId) => inProgressId === idMeal)
+                ? 'Continue Recipe'
+                : 'Start Recipe'
+            }
+
+          </button>)
+      }
     </section>
   );
 }

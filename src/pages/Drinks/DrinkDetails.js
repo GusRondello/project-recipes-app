@@ -1,11 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import RecomendationCarousel from '../../components/RecomendationCarousel';
 
 function DrinkDetails() {
   const [drink, setDrink] = useState([]);
   const [recomendation, setRecomendation] = useState([]);
+  const doneRecipes = useSelector((state) => state.Recipes.doneRecipes);
+  const [isRecipeDone, setRecipeDone] = useState(false);
+  const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
+  const inProgressIds = Object.keys(inProgressRecipes?.drinks || {});
   const { id } = useParams();
   const URL = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
 
@@ -35,11 +40,19 @@ function DrinkDetails() {
   );
 
   const {
+    idDrink,
     strDrinkThumb,
     strDrink,
     strAlcoholic,
     strInstructions,
   } = drink;
+
+  useEffect(
+    () => {
+      const checkIfIsDone = doneRecipes.some((recipe) => recipe.id === idDrink);
+      setRecipeDone(checkIfIsDone);
+    }, [idDrink, doneRecipes],
+  );
 
   const getIngredientsAndMeasure = () => {
     const twenty = 20;
@@ -78,7 +91,22 @@ function DrinkDetails() {
       <ul>{ getIngredientsAndMeasure() }</ul>
       <p data-testid="instructions">{ strInstructions }</p>
       <RecomendationCarousel recomendations={ recomendation } />
-      <button type="button" data-testid="start-recipe-btn">Start Recipe</button>
+      {
+        !isRecipeDone && (
+          <button
+            className="start_recipe_btn"
+            type="button"
+            data-testid="start-recipe-btn"
+          >
+            {
+              inProgressIds
+                .some((inProgressId) => inProgressId === idDrink)
+                ? 'Continue Recipe'
+                : 'Start Recipe'
+            }
+
+          </button>)
+      }
     </section>
   );
 }
