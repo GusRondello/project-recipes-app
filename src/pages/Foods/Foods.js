@@ -55,11 +55,23 @@ function Foods() {
     }
   };
 
+  const cleanFilterByCategory = () => {
+    getFirstRecipeMeals();
+    changeSelectedCategory('');
+  };
+
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
 
       <nav>
+        <button
+          type="button"
+          data-testid="All-category-filter"
+          onClick={ cleanFilterByCategory }
+        >
+          All
+        </button>
         {categories
           && categories
             .map((categoryName, index) => (
