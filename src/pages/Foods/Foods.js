@@ -46,12 +46,12 @@ function Foods() {
 
   const handleClick = ({ target }) => {
     const category = target.name;
-    if (selectedCategory === '') {
-      changeSelectedCategory(category);
-      getRecipeByCategory(category);
-    } else {
+    if (selectedCategory === category) {
       getFirstRecipeMeals();
       changeSelectedCategory('');
+    } else {
+      changeSelectedCategory(category);
+      getRecipeByCategory(category);
     }
   };
 
