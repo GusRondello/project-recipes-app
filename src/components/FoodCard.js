@@ -6,7 +6,7 @@ import '../styles/FoodCard.css';
 function FoodCard({ category, recipeFoods }) {
   return (
     <div className="page-recipe-food">
-      {recipeFoods.length === 1 && category === ''
+      {recipeFoods.length === 1 && (category === '' || category === undefined)
         ? <Redirect to={ `/foods/${recipeFoods[0].idMeal}` } />
         : null}
       { recipeFoods.map((recipe, index) => (
