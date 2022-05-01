@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import RecomendationCarousel from '../../components/RecomendationCarousel';
 import '../../styles/FoodDetails.css';
 
-function FoodDetails() {
+function FoodDetails({ history }) {
   const [recipe, setRecipe] = useState([]);
   const [recomendation, setRecomendation] = useState([]);
   const [isRecipeDone, setRecipeDone] = useState(false);
@@ -76,6 +77,10 @@ function FoodDetails() {
     return ingredientsAndMeasure;
   };
 
+  const handleStartRecipe = () => {
+    history.push(`/foods/${idMeal}/in-progress`);
+  };
+
   return (
     <section>
       <img
@@ -104,6 +109,7 @@ function FoodDetails() {
             className="start_recipe_btn"
             type="button"
             data-testid="start-recipe-btn"
+            onClick={ handleStartRecipe }
           >
             {
               inProgressIds
@@ -117,5 +123,9 @@ function FoodDetails() {
     </section>
   );
 }
+
+FoodDetails.propTypes = {
+  history: PropTypes.arrayOf(PropTypes.any).isRequired,
+};
 
 export default FoodDetails;

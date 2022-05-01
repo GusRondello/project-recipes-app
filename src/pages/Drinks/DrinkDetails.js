@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import RecomendationCarousel from '../../components/RecomendationCarousel';
 
-function DrinkDetails() {
+function DrinkDetails({ history }) {
   const [drink, setDrink] = useState([]);
   const [recomendation, setRecomendation] = useState([]);
   const doneRecipes = useSelector((state) => state.Recipes.doneRecipes);
   const [isRecipeDone, setRecipeDone] = useState(false);
   const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
-  const inProgressIds = Object.keys(inProgressRecipes?.drinks || {});
+  const inProgressIds = Object.keys(inProgressRecipes?.cocktails || []);
   const { id } = useParams();
   const URL = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
 
@@ -76,6 +76,10 @@ function DrinkDetails() {
     return ingredientsAndMeasure;
   };
 
+  const handleStartRecipe = () => {
+    history.push(`/drinks/${idDrink}/in-progress`);
+  };
+
   return (
     <section>
       <img
@@ -97,6 +101,7 @@ function DrinkDetails() {
             className="start_recipe_btn"
             type="button"
             data-testid="start-recipe-btn"
+            onClick={ handleStartRecipe }
           >
             {
               inProgressIds
@@ -112,6 +117,7 @@ function DrinkDetails() {
 }
 
 DrinkDetails.propTypes = {
+  history: PropTypes.arrayOf(PropTypes.any).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,

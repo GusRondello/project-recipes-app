@@ -18,23 +18,11 @@ function Login({ history }) {
 
   const handleLoginButton = () => {
     const stringifyEmail = JSON.stringify({ email: userInfo.email });
-    const stringifyDoneRecipe = JSON.stringify([{
-      id: '',
-      type: '',
-      nationality: '',
-      category: '',
-      alcoholicOrNot: '',
-      name: '',
-      image: '',
-      doneDate: '',
-      tags: '',
-    }]);
 
     window.localStorage.setItem('mealsToken', '1');
     window.localStorage.setItem('cocktailsToken', '1');
     window.localStorage.setItem('user', stringifyEmail);
-    window.localStorage.setItem('doneRecipes', stringifyDoneRecipe);
-    window.localStorage.setItem('inProgressRecipes', JSON.stringify({meals: {}, drinks:{}}));
+
     history.push('/foods');
   };
 
