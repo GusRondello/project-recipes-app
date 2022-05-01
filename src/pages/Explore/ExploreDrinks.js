@@ -8,6 +8,18 @@ function ExploreDrinks() {
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
+      <button
+        type="button"
+        data-testid="explore-by-ingredient"
+      >
+        By Ingredient
+      </button>
+      <button
+        type="button"
+        data-testid="explore-surprise"
+      >
+        Surprise me!
+      </button>
       <Footer />
     </div>
   );
