@@ -8,8 +8,8 @@ function Explore() {
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
-      <button type="button">Explore Foods</button>
-      <button type="button">Explore Drinks</button>
+      <button type="button" data-testid="explore-foods">Explore Foods</button>
+      <button type="button" data-testid="explore-drinks">Explore Drinks</button>
       <Footer />
     </div>
   );
