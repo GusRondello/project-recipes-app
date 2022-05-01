@@ -52,10 +52,6 @@ function ExploreDrinkIngredients() {
             <h1 data-testid={ `${index}-card-name` }>{ingredient}</h1>
           </button>
         )) }
-      <img
-        src={ `https://www.thecocktaildb.com/images/ingredients/${ingredients[1]}-Small.png` }
-        alt="ingredient"
-      />
       <Footer />
     </div>
   );

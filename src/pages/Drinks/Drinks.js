@@ -13,6 +13,8 @@ function Drinks() {
   const [selectedCategory, changeSelectedCategory] = useState('');
 
   const recipeDrinks = useSelector((state) => state.FilterRecipeDrink.data);
+  const ingredient = useSelector((state) => state.FilterRecipeDrink.ingredient);
+
   const pageTitle = 'Drinks';
   const componentName = 'drinks';
 
@@ -23,6 +25,17 @@ function Drinks() {
   };
 
   useEffect(() => {
+    if (ingredient !== '') {
+      const getRecipesByIngredient = async () => {
+        const request = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`);
+        const recipes = await request.json();
+        changeInitialRecipes(recipes.drinks.slice(0, DOZE));
+      };
+      getRecipesByIngredient();
+    } else {
+      getFirstRecipeMeals();
+    }
+
     const getFirstCategories = async () => {
       const request = await fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
       const response = await request.json();
@@ -30,9 +43,8 @@ function Drinks() {
       changeInitialCategories(firstCategories.map((category) => category.strCategory));
     };
 
-    getFirstRecipeMeals();
     getFirstCategories();
-  }, []);
+  }, [ingredient]);
 
   useEffect(() => {
     if (recipeDrinks !== undefined && recipeDrinks !== null) {

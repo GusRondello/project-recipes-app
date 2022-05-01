@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { saveSelectedFoodIngredient } from '../../redux/action';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 
 const DOZE = 12;
 
 function ExploreFoodIngredients() {
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   const [ingredients, changeIngredients] = useState([]);
   const componentName = 'explore-foods-ingredients';
   const pageTitle = 'Explore Ingredients';
@@ -19,19 +25,29 @@ function ExploreFoodIngredients() {
     getIngredients();
   }, []);
 
+  const handleClick = (ingredient) => {
+    dispatch(saveSelectedFoodIngredient(ingredient));
+    history.push('/foods');
+  };
+
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
       {ingredients !== []
         && ingredients.map((ingredient, index) => (
-          <div key={ ingredient.idIngredient } data-testid={ `${index}-ingredient-card` }>
+          <button
+            type="button"
+            key={ ingredient.idIngredient }
+            data-testid={ `${index}-ingredient-card` }
+            onClick={ () => handleClick(ingredient) }
+          >
             <img
               src={ `https://www.themealdb.com/images/ingredients/${ingredient.strIngredient}-Small.png` }
               data-testid={ `${index}-card-img` }
               alt="ingredient"
             />
             <h1 data-testid={ `${index}-card-name` }>{ingredient.strIngredient}</h1>
-          </div>
+          </button>
         )) }
       <Footer />
     </div>
