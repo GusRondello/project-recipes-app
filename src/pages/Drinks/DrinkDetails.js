@@ -1,7 +1,9 @@
+import clipboardCopy from 'clipboard-copy';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import RecomendationCarousel from '../../components/RecomendationCarousel';
 
 function DrinkDetails({ history }) {
@@ -80,6 +82,11 @@ function DrinkDetails({ history }) {
     history.push(`/drinks/${idDrink}/in-progress`);
   };
 
+  const handleShareButton = () => {
+    clipboardCopy(window.location.href);
+    toast.success('Link copied!');
+  };
+
   return (
     <section>
       <img
@@ -89,7 +96,14 @@ function DrinkDetails({ history }) {
         data-testid="recipe-photo"
       />
       <h2 data-testid="recipe-title">{ strDrink }</h2>
-      <button type="button" data-testid="share-btn">Share</button>
+      <button
+        type="button"
+        data-testid="share-btn"
+        onClick={ handleShareButton }
+      >
+        Share
+
+      </button>
       <button type="button" data-testid="favorite-btn">Favorite</button>
       <p data-testid="recipe-category">{ strAlcoholic }</p>
       <ul>{ getIngredientsAndMeasure() }</ul>
