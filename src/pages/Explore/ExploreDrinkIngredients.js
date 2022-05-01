@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
+import { saveSelectedIngredientDrink } from '../../redux/action';
 
 const DOZE = 12;
 
 function ExploreDrinkIngredients() {
-  const [ingredients, changeIngredients] = useState([]);
+  const history = useHistory();
   const componentName = 'explore-drinks-ingredients';
   const pageTitle = 'Explore Ingredients';
+
+  const [ingredients, changeIngredients] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getIngredients = async () => {
@@ -22,14 +28,21 @@ function ExploreDrinkIngredients() {
     getIngredients();
   }, []);
 
+  const handleClick = (ingredient) => {
+    dispatch(saveSelectedIngredientDrink(ingredient));
+    history.push('/drinks');
+  };
+
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
       {ingredients !== []
         && ingredients.map((ingredient, index) => (
-          <div
+          <button
+            type="button"
             key={ index }
             data-testid={ `${index}-ingredient-card` }
+            onClick={ () => handleClick(ingredient) }
           >
             <img
               src={ `https://www.thecocktaildb.com/images/ingredients/${ingredient}-Small.png` }
@@ -37,7 +50,7 @@ function ExploreDrinkIngredients() {
               alt="ingredient"
             />
             <h1 data-testid={ `${index}-card-name` }>{ingredient}</h1>
-          </div>
+          </button>
         )) }
       <img
         src={ `https://www.thecocktaildb.com/images/ingredients/${ingredients[1]}-Small.png` }
