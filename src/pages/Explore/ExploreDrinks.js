@@ -8,10 +8,19 @@ function ExploreDrinks() {
   const componentName = 'explore-drinks';
   const pageTitle = 'Explore Drinks';
 
-  const handleClick = ({ target }) => {
+  const getRandomRecipe = async () => {
+    const request = await fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php');
+    const recipe = await request.json();
+    history.push(`/drinks/${recipe.drinks[0].idDrink}`);
+  };
+
+  const handleClick = async ({ target }) => {
     const buttonName = target.name;
     if (buttonName === 'byIngredient') {
       history.push('/explore/drinks/ingredients');
+    }
+    if (buttonName === 'surprise') {
+      await getRandomRecipe();
     }
   };
 
@@ -28,7 +37,9 @@ function ExploreDrinks() {
       </button>
       <button
         type="button"
+        name="surprise"
         data-testid="explore-surprise"
+        onClick={ handleClick }
       >
         Surprise me!
       </button>

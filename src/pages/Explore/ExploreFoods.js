@@ -8,10 +8,19 @@ function ExploreFoods() {
   const componentName = 'explore-foods';
   const pageTitle = 'Explore Foods';
 
-  const handleClick = ({ target }) => {
+  const getRandomRecipe = async () => {
+    const request = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+    const recipe = await request.json();
+    history.push(`/foods/${recipe.meals[0].idMeal}`);
+  };
+
+  const handleClick = async ({ target }) => {
     const buttonName = target.name;
     if (buttonName === 'byIngredient') {
       history.push('/explore/foods/ingredients');
+    }
+    if (buttonName === 'surprise') {
+      await getRandomRecipe();
     }
     if (buttonName === 'byNationality') {
       history.push('/explore/foods/nationalities');
@@ -40,7 +49,8 @@ function ExploreFoods() {
       <button
         type="button"
         data-testid="explore-surprise"
-        name="surpriseMe"
+        name="surprise"
+        onClick={ handleClick }
       >
         Surprise me!
       </button>
