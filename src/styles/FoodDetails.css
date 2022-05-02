@@ -1,0 +1,19 @@
+.recomendation_wrapper {
+  height: 172px;
+  width: 162px;
+}
+
+.img_container {
+  display: flex;
+  max-height: 50%;
+}
+
+.img_container img {
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.start_recipe_btn {
+  bottom: 0;
+  position: fixed;
+}
