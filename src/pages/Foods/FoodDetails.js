@@ -5,18 +5,24 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import RecomendationCarousel from '../../components/RecomendationCarousel';
+import blackHeart from '../../images/blackHeartIcon.svg';
+import shareIcon from '../../images/shareIcon.svg';
+import whiteHeart from '../../images/whiteHeartIcon.svg';
 import '../../styles/FoodDetails.css';
 
 function FoodDetails({ history }) {
   const [recipe, setRecipe] = useState([]);
   const [recomendation, setRecomendation] = useState([]);
   const [isRecipeDone, setRecipeDone] = useState(false);
+  const [favorite, setFavorite] = useState(false);
   const doneRecipes = useSelector((state) => state.Recipes.doneRecipes);
   const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
+  const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
   const inProgressIds = Object.keys(inProgressRecipes?.meals || {});
   const { id } = useParams();
   const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
   const {
+    strArea,
     idMeal,
     strMealThumb,
     strMeal,
@@ -57,6 +63,17 @@ function FoodDetails({ history }) {
     }, [idMeal, doneRecipes],
   );
 
+  useEffect(
+    () => {
+      const checkFavorite = () => {
+        const check = favoriteRecipes
+          .some((meal) => meal.id === idMeal);
+        setFavorite(check);
+      };
+      checkFavorite();
+    }, [favoriteRecipes, idMeal],
+  );
+
   const getIngredientsAndMeasure = () => {
     const twenty = 20;
     const ingredientsAndMeasure = [];
@@ -88,6 +105,23 @@ function FoodDetails({ history }) {
     toast.success('Link copied!');
   };
 
+  const handleFavButton = () => {
+    setFavorite((prevState) => !prevState);
+
+    const newFavoriteList = [
+      {
+        id: idMeal,
+        type: 'food',
+        nationality: strArea,
+        category: strCategory,
+        alcoholicOrNot: '',
+        name: strMeal,
+        image: strMealThumb,
+      }];
+
+    window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
+  };
+
   return (
     <section>
       <img
@@ -102,10 +136,21 @@ function FoodDetails({ history }) {
         data-testid="share-btn"
         onClick={ handleShareButton }
       >
-        Share
+        <img src={ shareIcon } alt="share icon" />
 
       </button>
-      <button type="button" data-testid="favorite-btn">Favorite</button>
+      <button
+        type="button"
+        data-testid="favorite-btn"
+        onClick={ handleFavButton }
+        src={ favorite ? blackHeart : whiteHeart }
+      >
+        {
+          favorite
+            ? <img src={ blackHeart } alt="black heart" />
+            : <img src={ whiteHeart } alt="white heart" />
+        }
+      </button>
       <p data-testid="recipe-category">{ strCategory }</p>
       <ul>{getIngredientsAndMeasure()}</ul>
       <p data-testid="instructions">{ strInstructions }</p>
@@ -139,7 +184,7 @@ function FoodDetails({ history }) {
 }
 
 FoodDetails.propTypes = {
-  history: PropTypes.arrayOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default FoodDetails;

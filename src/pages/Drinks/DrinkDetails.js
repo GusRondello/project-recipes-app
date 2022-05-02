@@ -5,13 +5,18 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import RecomendationCarousel from '../../components/RecomendationCarousel';
+import blackHeart from '../../images/blackHeartIcon.svg';
+import shareIcon from '../../images/shareIcon.svg';
+import whiteHeart from '../../images/whiteHeartIcon.svg';
 
 function DrinkDetails({ history }) {
   const [drink, setDrink] = useState([]);
   const [recomendation, setRecomendation] = useState([]);
   const doneRecipes = useSelector((state) => state.Recipes.doneRecipes);
+  const [favorite, setFavorite] = useState(false);
   const [isRecipeDone, setRecipeDone] = useState(false);
   const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
+  const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
   const inProgressIds = Object.keys(inProgressRecipes?.cocktails || []);
   const { id } = useParams();
   const URL = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
@@ -46,8 +51,20 @@ function DrinkDetails({ history }) {
     strDrinkThumb,
     strDrink,
     strAlcoholic,
+    strCategory,
     strInstructions,
   } = drink;
+
+  useEffect(
+    () => {
+      const checkFavorite = () => {
+        const check = favoriteRecipes
+          .some((recipe) => recipe.id === idDrink);
+        setFavorite(check);
+      };
+      checkFavorite();
+    }, [favoriteRecipes, idDrink],
+  );
 
   useEffect(
     () => {
@@ -87,6 +104,23 @@ function DrinkDetails({ history }) {
     toast.success('Link copied!');
   };
 
+  const handleFavButton = () => {
+    setFavorite((prevState) => !prevState);
+
+    const newFavoriteList = [
+      {
+        id: idDrink,
+        type: 'drink',
+        nationality: '',
+        category: strCategory,
+        alcoholicOrNot: strAlcoholic,
+        name: strDrink,
+        image: strDrinkThumb,
+      }];
+
+    window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
+  };
+
   return (
     <section>
       <img
@@ -100,11 +134,23 @@ function DrinkDetails({ history }) {
         type="button"
         data-testid="share-btn"
         onClick={ handleShareButton }
+
       >
-        Share
+        <img src={ shareIcon } alt="share icon" />
 
       </button>
-      <button type="button" data-testid="favorite-btn">Favorite</button>
+      <button
+        type="button"
+        data-testid="favorite-btn"
+        onClick={ handleFavButton }
+        src={ favorite ? blackHeart : whiteHeart }
+      >
+        {
+          favorite
+            ? <img src={ blackHeart } alt="black heart" />
+            : <img src={ whiteHeart } alt="white heart" />
+        }
+      </button>
       <p data-testid="recipe-category">{ strAlcoholic }</p>
       <ul>{ getIngredientsAndMeasure() }</ul>
       <p data-testid="instructions">{ strInstructions }</p>
@@ -131,7 +177,7 @@ function DrinkDetails({ history }) {
 }
 
 DrinkDetails.propTypes = {
-  history: PropTypes.arrayOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
