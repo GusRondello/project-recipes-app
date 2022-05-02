@@ -28,7 +28,7 @@ function ExploreFoodIngredients() {
   const handleClick = (ingredient) => {
     dispatch(saveSelectedFoodIngredient(ingredient));
     history.push('/foods');
-    dispatch(saveSelectedFoodIngredient(''));
+    // dispatch(saveSelectedFoodIngredient(''));
   };
 
   return (

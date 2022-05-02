@@ -18,7 +18,7 @@ export const saveSelectedFoodIngredient = (ingredient) => ({
   ingredient,
 });
 
-export const saveSelectedIngredientDrink = (ingredient) => ({
+export const saveSelectedDrinkIngredient = (ingredient) => ({
   type: SELECTED_DRINK_INGREDIENT,
   ingredient,
 });

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
-import { saveSelectedIngredientDrink } from '../../redux/action';
+import { saveSelectedDrinkIngredient } from '../../redux/action';
 
 const DOZE = 12;
 
@@ -29,9 +29,9 @@ function ExploreDrinkIngredients() {
   }, []);
 
   const handleClick = (ingredient) => {
-    dispatch(saveSelectedIngredientDrink(ingredient));
+    dispatch(saveSelectedDrinkIngredient(ingredient));
     history.push('/drinks');
-    dispatch(saveSelectedDrinkIngredient(''));
+    // dispatch(saveSelectedDrinkIngredient(''));
   };
 
   return (
