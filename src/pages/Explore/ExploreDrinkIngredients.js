@@ -31,6 +31,7 @@ function ExploreDrinkIngredients() {
   const handleClick = (ingredient) => {
     dispatch(saveSelectedIngredientDrink(ingredient));
     history.push('/drinks');
+    dispatch(saveSelectedDrinkIngredient(''));
   };
 
   return (
