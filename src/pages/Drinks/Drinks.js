@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Header from '../../components/Header';
 import DrinkCard from '../../components/DrinkCard';
 import Footer from '../../components/Footer';
+import Header from '../../components/Header';
 
 const DOZE = 12;
 const CINCO = 5;
@@ -25,7 +25,7 @@ function Drinks() {
   };
 
   useEffect(() => {
-    if (ingredient !== '') {
+    if (ingredient !== '' && ingredient !== undefined) {
       const getRecipesByIngredient = async () => {
         const request = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`);
         const recipes = await request.json();

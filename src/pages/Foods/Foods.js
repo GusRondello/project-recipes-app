@@ -25,7 +25,7 @@ function Foods() {
   };
 
   useEffect(() => {
-    if (ingredient !== '') {
+    if (ingredient !== '' && ingredient !== undefined) {
       const getRecipesByIngredient = async () => {
         const request = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient.strIngredient}`);
         const recipes = await request.json();
