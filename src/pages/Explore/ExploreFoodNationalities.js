@@ -12,13 +12,13 @@ function ExploreFoodNationalities() {
   const componentName = 'explore-nationalities';
   const pageTitle = 'Explore Nationalities';
 
-  useEffect(() => {
-    const getFirstRecipeMeals = async () => {
-      const request = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-      const recipes = await request.json();
-      changeInitialRecipes(recipes.meals.slice(0, DOZE));
-    };
+  const getFirstRecipeMeals = async () => {
+    const request = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    const recipes = await request.json();
+    changeInitialRecipes(recipes.meals.slice(0, DOZE));
+  };
 
+  useEffect(() => {
     const getNationaliries = async () => {
       const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list');
       const data = await response.json();
@@ -31,12 +31,16 @@ function ExploreFoodNationalities() {
 
   useEffect(() => {
     if (selectedNationality !== '') {
-      const getRecipes = async () => {
-        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${selectedNationality}`);
-        const recipes = await response.json();
-        changeInitialRecipes(recipes.meals.slice(0, DOZE));
-      };
-      getRecipes();
+      if (selectedNationality === 'All') {
+        getFirstRecipeMeals();
+      } else {
+        const getRecipes = async () => {
+          const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${selectedNationality}`);
+          const recipes = await response.json();
+          changeInitialRecipes(recipes.meals.slice(0, DOZE));
+        };
+        getRecipes();
+      }
     }
   }, [selectedNationality]);
 
@@ -48,7 +52,7 @@ function ExploreFoodNationalities() {
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
       <select data-testid="explore-by-nationality-dropdown" onChange={ handleChange }>
-        <option>All</option>
+        <option data-testid="All-option">All</option>
         {nationalities
           .map((nationality) => (
             <option
