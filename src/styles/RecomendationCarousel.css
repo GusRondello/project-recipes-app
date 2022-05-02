@@ -1,0 +1,12 @@
+.meal_image {
+  width: 100%;
+}
+
+.carousel_container {
+  display: flex;
+}
+
+.recomendation_card {
+  height: 160px;
+  width: 50%;
+}

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 
 function Login({ history }) {
   const [userInfo, setUserInfo] = useState({
@@ -18,9 +18,11 @@ function Login({ history }) {
 
   const handleLoginButton = () => {
     const stringifyEmail = JSON.stringify({ email: userInfo.email });
+
     window.localStorage.setItem('mealsToken', '1');
     window.localStorage.setItem('cocktailsToken', '1');
     window.localStorage.setItem('user', stringifyEmail);
+
     history.push('/foods');
   };
 
