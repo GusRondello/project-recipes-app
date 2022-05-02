@@ -4,11 +4,23 @@ export const RECEIVE_FOODS = 'RECEIVE_FOODS';
 export const FILTER_DRINK = 'FILTER_DRINK';
 export const REQUEST_DRINKS = 'REQUEST_DRINKS';
 export const RECEIVE_DRINKS = 'RECEIVE_DRINKS';
+export const SELECTED_FOOD_INGREDIENT = 'SELECTED_FOOD_INGREDIENT';
+export const SELECTED_DRINK_INGREDIENT = 'SELECTED_DRINK_INGREDIENT';
 
 export const saveFilterRecipeFood = (searchWord, searchType) => ({
   type: FILTER_FOOD,
   searchWord,
   searchType,
+});
+
+export const saveSelectedFoodIngredient = (ingredient) => ({
+  type: SELECTED_FOOD_INGREDIENT,
+  ingredient,
+});
+
+export const saveSelectedDrinkIngredient = (ingredient) => ({
+  type: SELECTED_DRINK_INGREDIENT,
+  ingredient,
 });
 
 export const requestFoods = () => ({
