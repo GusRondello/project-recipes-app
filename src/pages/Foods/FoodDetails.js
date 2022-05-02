@@ -108,18 +108,22 @@ function FoodDetails({ history }) {
   const handleFavButton = () => {
     setFavorite((prevState) => !prevState);
 
-    const newFavoriteList = [
-      {
-        id: idMeal,
-        type: 'food',
-        nationality: strArea,
-        category: strCategory,
-        alcoholicOrNot: '',
-        name: strMeal,
-        image: strMealThumb,
-      }];
+    if (!favorite) {
+      const newFavoriteList = [
+        {
+          id: idMeal,
+          type: 'food',
+          nationality: strArea,
+          category: strCategory,
+          alcoholicOrNot: '',
+          name: strMeal,
+          image: strMealThumb,
+        }];
 
-    window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
+      window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
+    } else {
+      window.localStorage.setItem('favoriteRecipes', JSON.stringify([{}]));
+    }
   };
 
   return (

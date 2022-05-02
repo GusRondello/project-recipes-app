@@ -107,18 +107,22 @@ function DrinkDetails({ history }) {
   const handleFavButton = () => {
     setFavorite((prevState) => !prevState);
 
-    const newFavoriteList = [
-      {
-        id: idDrink,
-        type: 'drink',
-        nationality: '',
-        category: strCategory,
-        alcoholicOrNot: strAlcoholic,
-        name: strDrink,
-        image: strDrinkThumb,
-      }];
+    if (!favorite) {
+      const newFavoriteList = [
+        {
+          id: idDrink,
+          type: 'drink',
+          nationality: '',
+          category: strCategory,
+          alcoholicOrNot: strAlcoholic,
+          name: strDrink,
+          image: strDrinkThumb,
+        }];
 
-    window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
+      window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
+    } else {
+      window.localStorage.setItem('favoriteRecipes', JSON.stringify([{}]));
+    }
   };
 
   return (
