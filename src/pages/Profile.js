@@ -19,9 +19,9 @@ function Profile({ history }) {
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ component } />
-      <h1 data-testid="profile-email">
+      <h2 data-testid="profile-email">
         {userObj.email}
-      </h1>
+      </h2>
       <Link
         to="/done-recipes"
         data-testid="profile-done-btn"
