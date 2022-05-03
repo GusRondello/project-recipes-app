@@ -26,6 +26,7 @@ function Header({ pageTitle, componentName }) {
           ? (
             <button
               type="button"
+              className="search-btn"
               onClick={ updateButton }
             >
               <img data-testid="search-top-btn" src={ searchIcon } alt="Button Profile" />

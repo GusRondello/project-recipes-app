@@ -1,5 +1,14 @@
 header {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-around;
+  background-color: rgb(218, 0, 0);
+  color: white;
+  margin-bottom: 6px;
+}
+
+.search-btn {
+  background-color: transparent;
+  border: none;
 }

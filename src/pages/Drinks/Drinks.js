@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import DrinkCard from '../../components/DrinkCard';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
+import '../../styles/Drinks.css';
 
 const DOZE = 12;
 const CINCO = 5;
@@ -88,6 +89,7 @@ function Drinks() {
       <nav>
         <button
           type="button"
+          className="category-btn"
           data-testid="All-category-filter"
           onClick={ cleanFilterByCategory }
         >
@@ -98,6 +100,7 @@ function Drinks() {
             .map((categoryName, index) => (
               <button
                 type="button"
+                className="category-btn"
                 key={ index }
                 name={ categoryName }
                 data-testid={ `${categoryName}-category-filter` }

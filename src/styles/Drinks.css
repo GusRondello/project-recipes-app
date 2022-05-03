@@ -1,0 +1,10 @@
+.category-btn {
+  background-color: transparent;
+  border: none;
+  color: red;
+  font-size: 18px;
+}
+
+.category-btn:hover {
+  color: gray;
+}
