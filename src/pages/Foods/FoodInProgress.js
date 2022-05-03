@@ -11,6 +11,7 @@ import '../../styles/InProgress.css';
 function FoodInProgress() {
   const [recipe, setRecipe] = useState([]);
   const [favorite, setFavorite] = useState(false);
+  const [inputs, setInputs] = useState({});
   const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
   const { id } = useParams();
   const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
@@ -46,11 +47,30 @@ function FoodInProgress() {
     }, [favoriteRecipes, idMeal],
   );
 
+  useEffect(
+    () => {
+      const getIngredientsList = () => {
+        const twenty = 20;
+        for (let i = 1; i < twenty; i += 1) {
+          if (recipe[`strIngredient${i}`]) {
+            setInputs((prevState) => ({
+              ...prevState,
+              [`${i}-checkbox`]: false,
+            }));
+          }
+        }
+      };
+      getIngredientsList();
+    }, [recipe],
+  );
+
   const handleCheckbox = ({ target }) => {
-    const isChecked = target.checked;
-    if (isChecked) {
-      target.style.textDecoration = 'line-through';
-    }
+    const { name, checked } = target;
+
+    setInputs((prevState) => ({
+      ...prevState,
+      [name]: checked,
+    }));
   };
 
   const getIngredientsAndMeasure = () => {
@@ -60,6 +80,7 @@ function FoodInProgress() {
       if (recipe[`strIngredient${i}`]) {
         const checkbox = (
           <label
+            className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
             data-testid="ingredient-step"
             htmlFor={ `${i}-checkbox` }
             key={ i }

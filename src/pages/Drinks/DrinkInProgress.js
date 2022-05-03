@@ -65,12 +65,11 @@ function DrinkInProgress() {
   );
 
   const handleCheckbox = ({ target }) => {
-    const { name } = target;
-    const { value } = target.checked;
-    console.log(value);
+    const { name, checked } = target;
+
     setInputs((prevState) => ({
       ...prevState,
-      [name]: !prevState.value,
+      [name]: checked,
     }));
   };
 
@@ -81,6 +80,7 @@ function DrinkInProgress() {
       if (drink[`strIngredient${i}`]) {
         const checkbox = (
           <label
+            className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
             data-testid="ingredient-step"
             htmlFor={ `${i}-checkbox` }
             key={ i }
