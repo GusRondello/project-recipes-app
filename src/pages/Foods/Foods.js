@@ -11,7 +11,10 @@ function Foods() {
   const [initialRecipes, changeInitialRecipes] = useState([]);
   const [categories, changeInitialCategories] = useState([]);
   const [selectedCategory, changeSelectedCategory] = useState('');
+
   const recipeFoods = useSelector((state) => state.FilterRecipeFood.data);
+  const ingredient = useSelector((state) => state.FilterRecipeFood.ingredient);
+
   const pageTitle = 'Foods';
   const componentName = 'foods';
 
@@ -22,15 +25,25 @@ function Foods() {
   };
 
   useEffect(() => {
+    if (ingredient !== '' && ingredient !== undefined) {
+      const getRecipesByIngredient = async () => {
+        const request = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient.strIngredient}`);
+        const recipes = await request.json();
+        changeInitialRecipes(recipes.meals.slice(0, DOZE));
+      };
+      getRecipesByIngredient();
+    } else {
+      getFirstRecipeMeals();
+    }
+
     const getFirstCategories = async () => {
       const request = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
       const response = await request.json();
       const firstCategories = response.meals.slice(0, CINCO);
       changeInitialCategories(firstCategories.map((category) => category.strCategory));
     };
-    getFirstRecipeMeals();
     getFirstCategories();
-  }, []);
+  }, [ingredient]);
 
   useEffect(() => {
     if (recipeFoods !== undefined && recipeFoods !== null) {
