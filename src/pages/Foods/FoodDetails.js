@@ -123,7 +123,7 @@ function FoodDetails({ history }) {
   };
 
   return (
-    <section>
+    <section className="page-food">
       <img
         className="meal_image"
         src={ strMealThumb }
@@ -161,7 +161,7 @@ function FoodDetails({ history }) {
       </div>
 
       <ul>{getIngredientsAndMeasure()}</ul>
-      <p data-testid="instructions">{ strInstructions }</p>
+      <p className="instructions" data-testid="instructions">{ strInstructions }</p>
       <iframe
         title={ strMeal }
         width="341"

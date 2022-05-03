@@ -1,7 +1,15 @@
-/* .header-conteiner {
+.page-food-details {
+  width: 100vw;
+}
+
+.header-conteiner {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.instructions {
+  width: 336px;
 }
 
 .start_recipe_btn {
@@ -24,27 +32,12 @@
   bottom: 0;
 }
 
-.share-btn, .favorite-btn {
-  border: none;
-  background-color: white;
-}
-/*
-.recomendation_wrapper {
-  height: 172px;
-  width: 162px;
-}
-*
-/* .img_container {
-  display: flex;
-  max-height: 50%;
-} */
-
-/* .img_container img {
-  object-fit: cover;
-  overflow: hidden;
-} */
-
 .meal_image {
-  width: 100vw;
-  height: 146px;
+  height: 155px;
+  margin-bottom: 15px;
+}
+
+.favorite-btn, .share-btn {
+  background-color: transparent;
+  border: none;
 }
