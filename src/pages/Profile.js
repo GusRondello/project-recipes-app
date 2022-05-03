@@ -20,7 +20,7 @@ function Profile({ history }) {
     <div>
       <Header pageTitle={ pageTitle } componentName={ component } />
       <h2 data-testid="profile-email">
-        {userObj.email}
+        {!userObj ? null : userObj.email}
       </h2>
       <Link
         to="/done-recipes"
