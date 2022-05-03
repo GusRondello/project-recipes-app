@@ -1,19 +1,50 @@
+/* .header-conteiner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.start_recipe_btn {
+  position: fixed;
+  padding: 5px;
+  background-color: red;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  bottom: 0;
+}
+
+.start_recipe_btn:hover {
+  position: fixed;
+  padding: 5px;
+  background-color: white;
+  border-radius: 5px;
+  border: solid 1.5px red;
+  color: red;
+  bottom: 0;
+}
+
+.share-btn, .favorite-btn {
+  border: none;
+  background-color: white;
+}
+/*
 .recomendation_wrapper {
   height: 172px;
   width: 162px;
 }
-
-.img_container {
+*
+/* .img_container {
   display: flex;
   max-height: 50%;
-}
+} */
 
-.img_container img {
+/* .img_container img {
   object-fit: cover;
   overflow: hidden;
-}
+} */
 
-.start_recipe_btn {
-  bottom: 0;
-  position: fixed;
+.meal_image {
+  width: 100vw;
+  height: 146px;
 }
