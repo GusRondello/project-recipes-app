@@ -1,7 +1,7 @@
 import clipboardCopy from 'clipboard-copy';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
@@ -11,7 +11,8 @@ import '../../styles/InProgress.css';
 function FoodInProgress() {
   const [recipe, setRecipe] = useState([]);
   const [favorite, setFavorite] = useState(false);
-
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
+  const history = useHistory();
   const {
     strMealThumb,
     idMeal,
@@ -69,7 +70,7 @@ function FoodInProgress() {
         }
       };
       getIngredientsList();
-    }, [recipe, idMeal],
+    }, [recipe, idMeal, inProgressRecipes.meals],
   );
 
   useEffect(
@@ -81,6 +82,21 @@ function FoodInProgress() {
       };
       window.localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
     }, [idMeal, inputs],
+  );
+
+  useEffect(
+    () => {
+      const checkButton = () => {
+        const inputValues = Object.values(inputs);
+        const checkedInputs = inputValues.every((input) => input === true);
+        if (checkedInputs) {
+          setButtonDisabled(false);
+        } else {
+          setButtonDisabled(true);
+        }
+      };
+      checkButton();
+    }, [inputs],
   );
 
   const handleCheckbox = ({ target }) => {
@@ -126,7 +142,7 @@ function FoodInProgress() {
   };
 
   const handleShareButton = () => {
-    clipboardCopy(window.location.href);
+    clipboardCopy(`http://localhost:3000/foods/${idMeal}`);
     toast.success('Link copied!');
   };
 
@@ -149,6 +165,10 @@ function FoodInProgress() {
     } else {
       window.localStorage.setItem('favoriteRecipes', JSON.stringify([{}]));
     }
+  };
+
+  const handleFinishRecipeBtn = () => {
+    history.push('/done-recipes');
   };
 
   return (
@@ -183,7 +203,15 @@ function FoodInProgress() {
       <p data-testid="recipe-category">{ strCategory }</p>
       <div>{getIngredientsAndMeasure()}</div>
       <p data-testid="instructions">{ strInstructions }</p>
-      <button type="button" data-testid="finish-recipe-btn">Finish Recipe</button>
+      <button
+        disabled={ isButtonDisabled }
+        onClick={ handleFinishRecipeBtn }
+        type="button"
+        data-testid="finish-recipe-btn"
+      >
+        Finish Recipe
+
+      </button>
     </section>
   );
 }

@@ -1,7 +1,7 @@
 import clipboardCopy from 'clipboard-copy';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
@@ -10,6 +10,8 @@ import '../../styles/InProgress.css';
 
 function DrinkInProgress() {
   const [drink, setDrink] = useState([]);
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
+  const history = useHistory();
   const [favorite, setFavorite] = useState(false);
   const [inputs, setInputs] = useState({});
   const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
@@ -94,7 +96,7 @@ function DrinkInProgress() {
               name={ `${i}-checkbox` }
               id={ `${i}-checkbox` }
               type="checkbox"
-              checked={ inputs[`${i}-checkbox`] }
+              checked={ !!inputs[`${i}-checkbox`] }
               onChange={ handleCheckbox }
             />
           </label>
@@ -106,8 +108,23 @@ function DrinkInProgress() {
     return ingredientsAndMeasure;
   };
 
+  useEffect(
+    () => {
+      const checkButton = () => {
+        const inputValues = Object.values(inputs);
+        const checkedInputs = inputValues.every((input) => input === true);
+        if (checkedInputs) {
+          setButtonDisabled(false);
+        } else {
+          setButtonDisabled(true);
+        }
+      };
+      checkButton();
+    }, [inputs],
+  );
+
   const handleShareButton = () => {
-    clipboardCopy(window.location.href);
+    clipboardCopy(`http://localhost:3000/drinks/${idDrink}`);
     toast.success('Link copied!');
   };
 
@@ -130,6 +147,10 @@ function DrinkInProgress() {
     } else {
       window.localStorage.setItem('favoriteRecipes', JSON.stringify([{}]));
     }
+  };
+
+  const handleFinishRecipeBtn = () => {
+    history.push('/done-recipes');
   };
 
   return (
@@ -165,7 +186,15 @@ function DrinkInProgress() {
       <p data-testid="recipe-category">{ strAlcoholic }</p>
       <div>{ getIngredientsAndMeasure() }</div>
       <p data-testid="instructions">{ strInstructions }</p>
-      <button type="button" data-testid="finish-recipe-btn">Finish Recipe</button>
+      <button
+        disabled={ isButtonDisabled }
+        type="button"
+        data-testid="finish-recipe-btn"
+        onClick={ handleFinishRecipeBtn }
+      >
+        Finish Recipe
+
+      </button>
     </section>
   );
 }
