@@ -20,7 +20,7 @@ function FoodInProgress() {
     strCategory,
     strInstructions,
   } = recipe;
-  const inProgressRecipes = JSON.parse(window.localStorage.getItem('inProgressRecipes'));
+  const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
   const [inputs, setInputs] = useState({});
   const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
   const { id } = useParams();
@@ -74,16 +74,12 @@ function FoodInProgress() {
 
   useEffect(
     () => {
-      const TIMER = 300;
-
-      setTimeout(() => {
-        const newState = {
-          meals: {
-            [idMeal]: { ...inputs },
-          },
-        };
-        window.localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
-      }, TIMER);
+      const newState = {
+        meals: {
+          [idMeal]: { ...inputs },
+        },
+      };
+      window.localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
     }, [idMeal, inputs],
   );
 
@@ -104,7 +100,7 @@ function FoodInProgress() {
         const checkbox = (
           <label
             className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
-            data-testid="ingredient-step"
+            data-testid={ `${i - 1}-ingredient-step` }
             htmlFor={ `${i}-checkbox` }
             key={ i }
           >
@@ -116,7 +112,7 @@ function FoodInProgress() {
             <input
               name={ `${i}-checkbox` }
               id={ `${i}-checkbox` }
-              checked={ inputs[`${i}-checkbox`] }
+              checked={ !!inputs[`${i}-checkbox`] }
               onChange={ handleCheckbox }
               type="checkbox"
             />
