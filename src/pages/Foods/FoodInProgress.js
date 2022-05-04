@@ -8,6 +8,60 @@ import shareIcon from '../../images/shareIcon.svg';
 import whiteHeart from '../../images/whiteHeartIcon.svg';
 import '../../styles/InProgress.css';
 
+function getIngredientsAndMeasure(handleCheckbox, recipe, inputs) {
+  const twenty = 20;
+  const ingredientsAndMeasure = [];
+  for (let i = 1; i < twenty; i += 1) {
+    if (recipe[`strIngredient${i}`]) {
+      const checkbox = (
+        <label
+          className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
+          data-testid={ `${i - 1}-ingredient-step` }
+          htmlFor={ `${i}-checkbox` }
+          key={ i }
+        >
+          {recipe[`strIngredient${i}`]}
+          {' '}
+          -
+          {' '}
+          {recipe[`strMeasure${i}`]}
+          <input
+            name={ `${i}-checkbox` }
+            id={ `${i}-checkbox` }
+            checked={ !!inputs[`${i}-checkbox`] }
+            onChange={ handleCheckbox }
+            type="checkbox"
+          />
+        </label>
+
+      );
+      ingredientsAndMeasure.push(checkbox);
+    }
+  }
+  return ingredientsAndMeasure;
+}
+
+function handleFavButton(strArea) {
+  setFavorite((prevState) => !prevState);
+
+  if (!favorite) {
+    const newFavoriteList = [
+      {
+        id: idMeal,
+        type: 'food',
+        nationality: strArea,
+        category: strCategory,
+        alcoholicOrNot: '',
+        name: strMeal,
+        image: strMealThumb,
+      }];
+
+    window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
+  } else {
+    window.localStorage.setItem('favoriteRecipes', JSON.stringify([{}]));
+  }
+}
+
 function FoodInProgress() {
   const [recipe, setRecipe] = useState([]);
   const [favorite, setFavorite] = useState(false);
@@ -92,63 +146,9 @@ function FoodInProgress() {
     }));
   };
 
-  const getIngredientsAndMeasure = () => {
-    const twenty = 20;
-    const ingredientsAndMeasure = [];
-    for (let i = 1; i < twenty; i += 1) {
-      if (recipe[`strIngredient${i}`]) {
-        const checkbox = (
-          <label
-            className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
-            data-testid={ `${i - 1}-ingredient-step` }
-            htmlFor={ `${i}-checkbox` }
-            key={ i }
-          >
-            {recipe[`strIngredient${i}`]}
-            {' '}
-            -
-            {' '}
-            {recipe[`strMeasure${i}`]}
-            <input
-              name={ `${i}-checkbox` }
-              id={ `${i}-checkbox` }
-              checked={ !!inputs[`${i}-checkbox`] }
-              onChange={ handleCheckbox }
-              type="checkbox"
-            />
-          </label>
-
-        );
-        ingredientsAndMeasure.push(checkbox);
-      }
-    }
-    return ingredientsAndMeasure;
-  };
-
   const handleShareButton = () => {
     clipboardCopy(window.location.href);
     toast.success('Link copied!');
-  };
-
-  const handleFavButton = () => {
-    setFavorite((prevState) => !prevState);
-
-    if (!favorite) {
-      const newFavoriteList = [
-        {
-          id: idMeal,
-          type: 'food',
-          nationality: strArea,
-          category: strCategory,
-          alcoholicOrNot: '',
-          name: strMeal,
-          image: strMealThumb,
-        }];
-
-      window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
-    } else {
-      window.localStorage.setItem('favoriteRecipes', JSON.stringify([{}]));
-    }
   };
 
   return (
@@ -171,7 +171,7 @@ function FoodInProgress() {
       <button
         type="button"
         data-testid="favorite-btn"
-        onClick={ handleFavButton }
+        onClick={ () => handleFavButton(strArea) }
         src={ favorite ? blackHeart : whiteHeart }
       >
         {
@@ -181,7 +181,7 @@ function FoodInProgress() {
         }
       </button>
       <p data-testid="recipe-category">{ strCategory }</p>
-      <div>{getIngredientsAndMeasure()}</div>
+      <div>{recipe && getIngredientsAndMeasure(handleCheckbox, recipe, inputs)}</div>
       <p data-testid="instructions">{ strInstructions }</p>
       <button type="button" data-testid="finish-recipe-btn">Finish Recipe</button>
     </section>
