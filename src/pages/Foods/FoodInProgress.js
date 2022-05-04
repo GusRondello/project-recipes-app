@@ -8,6 +8,72 @@ import shareIcon from '../../images/shareIcon.svg';
 import whiteHeart from '../../images/whiteHeartIcon.svg';
 import '../../styles/InProgress.css';
 
+function getIngredientsAndMeasure(handleCheckbox, recipe, inputs) {
+  const twenty = 20;
+  const ingredientsAndMeasure = [];
+  for (let i = 1; i < twenty; i += 1) {
+    if (recipe[`strIngredient${i}`]) {
+      const checkbox = (
+        <label
+          className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
+          data-testid={ `${i - 1}-ingredient-step` }
+          htmlFor={ `${i}-checkbox` }
+          key={ i }
+        >
+          {recipe[`strIngredient${i}`]}
+          {' '}
+          -
+          {' '}
+          {recipe[`strMeasure${i}`]}
+          <input
+            name={ `${i}-checkbox` }
+            id={ `${i}-checkbox` }
+            checked={ !!inputs[`${i}-checkbox`] }
+            onChange={ handleCheckbox }
+            type="checkbox"
+          />
+        </label>
+
+      );
+      ingredientsAndMeasure.push(checkbox);
+    }
+  }
+  return ingredientsAndMeasure;
+}
+
+function handleFavButton(recipe, favorite, setFavorite) {
+  setFavorite((prevState) => !prevState);
+  const {
+    strMealThumb,
+    idMeal,
+    strArea,
+    strMeal,
+    strCategory,
+  } = recipe;
+
+  if (!favorite) {
+    const newFavoriteList = [
+      {
+        id: idMeal,
+        type: 'food',
+        nationality: strArea,
+        category: strCategory,
+        alcoholicOrNot: '',
+        name: strMeal,
+        image: strMealThumb,
+      }];
+
+    window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
+  } else {
+    window.localStorage.setItem('favoriteRecipes', JSON.stringify([{}]));
+  }
+}
+
+const handleShareButton = (idMeal) => {
+  clipboardCopy(`http://localhost:3000/foods/${idMeal}`);
+  toast.success('Link copied!');
+};
+
 function FoodInProgress() {
   const [recipe, setRecipe] = useState([]);
   const [favorite, setFavorite] = useState(false);
@@ -27,7 +93,6 @@ function FoodInProgress() {
   const { id } = useParams();
   const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
 
-  // console.log(inProgressRecipes.meals[idMeal]);
   useEffect(
     () => {
       const fetchRecipeById = async () => {
@@ -61,13 +126,13 @@ function FoodInProgress() {
               [`${i}-checkbox`]: false,
             }));
           }
-          if (inProgressRecipes.meals !== undefined && inProgressRecipes.meals !== []) {
-            setInputs((prevState) => ({
-              ...prevState,
-              ...inProgressRecipes.meals[idMeal],
-            }));
-          }
+          // if (inProgressRecipes.meals !== undefined && inProgressRecipes.meals !== []) {
+          setInputs((prevState) => ({
+            ...prevState,
+            ...inProgressRecipes.meals[idMeal],
+          }));
         }
+        // }
       };
       getIngredientsList();
     }, [recipe, idMeal, inProgressRecipes.meals],
@@ -108,65 +173,6 @@ function FoodInProgress() {
     }));
   };
 
-  const getIngredientsAndMeasure = () => {
-    const twenty = 20;
-    const ingredientsAndMeasure = [];
-    for (let i = 1; i < twenty; i += 1) {
-      if (recipe[`strIngredient${i}`]) {
-        const checkbox = (
-          <label
-            className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
-            data-testid={ `${i - 1}-ingredient-step` }
-            htmlFor={ `${i}-checkbox` }
-            key={ i }
-          >
-            {recipe[`strIngredient${i}`]}
-            {' '}
-            -
-            {' '}
-            {recipe[`strMeasure${i}`]}
-            <input
-              name={ `${i}-checkbox` }
-              id={ `${i}-checkbox` }
-              checked={ !!inputs[`${i}-checkbox`] }
-              onChange={ handleCheckbox }
-              type="checkbox"
-            />
-          </label>
-
-        );
-        ingredientsAndMeasure.push(checkbox);
-      }
-    }
-    return ingredientsAndMeasure;
-  };
-
-  const handleShareButton = () => {
-    clipboardCopy(`http://localhost:3000/foods/${idMeal}`);
-    toast.success('Link copied!');
-  };
-
-  const handleFavButton = () => {
-    setFavorite((prevState) => !prevState);
-
-    if (!favorite) {
-      const newFavoriteList = [
-        {
-          id: idMeal,
-          type: 'food',
-          nationality: strArea,
-          category: strCategory,
-          alcoholicOrNot: '',
-          name: strMeal,
-          image: strMealThumb,
-        }];
-
-      window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
-    } else {
-      window.localStorage.setItem('favoriteRecipes', JSON.stringify([{}]));
-    }
-  };
-
   const handleFinishRecipeBtn = () => {
     history.push('/done-recipes');
   };
@@ -183,7 +189,7 @@ function FoodInProgress() {
       <button
         type="button"
         data-testid="share-btn"
-        onClick={ handleShareButton }
+        onClick={ () => handleShareButton(idMeal) }
       >
         <img src={ shareIcon } alt="share icon" />
 
@@ -191,7 +197,7 @@ function FoodInProgress() {
       <button
         type="button"
         data-testid="favorite-btn"
-        onClick={ handleFavButton }
+        onClick={ () => handleFavButton(strArea, favorite, setFavorite) }
         src={ favorite ? blackHeart : whiteHeart }
       >
         {
@@ -201,7 +207,7 @@ function FoodInProgress() {
         }
       </button>
       <p data-testid="recipe-category">{ strCategory }</p>
-      <div>{getIngredientsAndMeasure()}</div>
+      <div>{recipe && getIngredientsAndMeasure(handleCheckbox, recipe, inputs)}</div>
       <p data-testid="instructions">{ strInstructions }</p>
       <button
         disabled={ isButtonDisabled }
