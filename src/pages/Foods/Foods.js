@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import FoodCard from '../../components/FoodCard';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
+import '../../styles/Main.css';
 
 const DOZE = 12;
 const CINCO = 5;
@@ -83,20 +84,22 @@ function Foods() {
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
-
-      <nav>
-        <button
-          type="button"
-          data-testid="All-category-filter"
-          onClick={ cleanFilterByCategory }
-        >
-          All
-        </button>
-        {categories
+      <main className="foods">
+        <nav className="category-container">
+          <button
+            type="button"
+            className="category-btn"
+            data-testid="All-category-filter"
+            onClick={ cleanFilterByCategory }
+          >
+            All
+          </button>
+          {categories
           && categories
             .map((categoryName, index) => (
               <button
                 type="button"
+                className="category-btn"
                 key={ index }
                 name={ categoryName }
                 data-testid={ `${categoryName}-category-filter` }
@@ -104,8 +107,10 @@ function Foods() {
               >
                 {categoryName}
               </button>))}
-      </nav>
-      <FoodCard category={ selectedCategory } recipeFoods={ initialRecipes } />
+        </nav>
+        <FoodCard category={ selectedCategory } recipeFoods={ initialRecipes } />
+      </main>
+
       <Footer />
     </div>
   );

@@ -34,10 +34,12 @@ function ExploreFoodIngredients() {
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
-      {ingredients !== []
+      <main className="explore-ingredients-container">
+        {ingredients !== []
         && ingredients.map((ingredient, index) => (
           <button
             type="button"
+            className="ingredient-btn"
             key={ ingredient.idIngredient }
             data-testid={ `${index}-ingredient-card` }
             onClick={ () => handleClick(ingredient) }
@@ -47,9 +49,15 @@ function ExploreFoodIngredients() {
               data-testid={ `${index}-card-img` }
               alt="ingredient"
             />
-            <h1 data-testid={ `${index}-card-name` }>{ingredient.strIngredient}</h1>
+            <h1
+              className="ingredient-name"
+              data-testid={ `${index}-card-name` }
+            >
+              {ingredient.strIngredient}
+            </h1>
           </button>
         )) }
+      </main>
       <Footer />
     </div>
   );

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import DrinkCard from '../../components/DrinkCard';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
-import '../../styles/Drinks.css';
+import '../../styles/Main.css';
 
 const DOZE = 12;
 const CINCO = 5;
@@ -85,17 +85,17 @@ function Drinks() {
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
-
-      <nav>
-        <button
-          type="button"
-          className="category-btn"
-          data-testid="All-category-filter"
-          onClick={ cleanFilterByCategory }
-        >
-          All
-        </button>
-        {categories
+      <main className="drinks">
+        <nav className="category-container">
+          <button
+            type="button"
+            className="category-btn"
+            data-testid="All-category-filter"
+            onClick={ cleanFilterByCategory }
+          >
+            All
+          </button>
+          {categories
           && categories
             .map((categoryName, index) => (
               <button
@@ -108,8 +108,10 @@ function Drinks() {
               >
                 {categoryName}
               </button>))}
-      </nav>
-      <DrinkCard category={ selectedCategory } recipeDrinks={ initialRecipes } />
+        </nav>
+        <DrinkCard category={ selectedCategory } recipeDrinks={ initialRecipes } />
+      </main>
+
       <Footer />
     </div>
   );

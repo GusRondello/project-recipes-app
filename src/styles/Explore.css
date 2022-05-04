@@ -1,0 +1,38 @@
+.button-container {
+	padding-top: 70px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin: 8px;
+}
+
+.explore-btn {
+	background-color: black;
+	border: none;
+	box-shadow: 2px 2px 2px #bebebe;
+	margin-bottom: 8px;
+	color: white;
+	padding: 6px;
+	font-size: 20px;
+}
+
+.explore-ingredients-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: 10px;
+	margin-bottom: 50px;
+}
+
+.ingredient-btn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: transparent;
+	border: none;
+}
+
+.ingredient-name {
+	width: 50px;
+	font-size: 18px;
+}

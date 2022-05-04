@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveFilterRecipeFood,
   RequestFoodAPI, RequestDrinkAPI, saveFilterRecipeDrink } from '../redux/action';
+import '../styles/SideBar.css';
 
 function SearchBar({ recipeType }) {
   const RecipeFoodList = useSelector((state) => state.FilterRecipeFood.data);
@@ -44,52 +45,65 @@ function SearchBar({ recipeType }) {
   };
 
   return (
-    <>
-      <input
-        data-testid="search-input"
-        className="search-input"
-        onChange={ handleChangeInput }
-        value={ searchWord }
-      />
-      <button
-        type="button"
-        data-testid="exec-search-btn"
-        onClick={ handleSubmit }
-      >
-        Search
-      </button>
-      <br />
-      <label htmlFor="ingredient">
+    <div className="sidebar-container">
+      <div className="input-search-type">
         <input
-          type="radio"
-          name="filter"
-          id="ingredient"
-          data-testid="ingredient-search-radio"
-          onChange={ handleChangeRadioButton }
+          data-testid="search-input"
+          className="search-input"
+          onChange={ handleChangeInput }
+          value={ searchWord }
         />
-        Ingredient
-      </label>
-      <label htmlFor="name">
-        <input
-          type="radio"
-          name="filter"
-          id="name"
-          data-testid="name-search-radio"
-          onChange={ handleChangeRadioButton }
-        />
-        Name
-      </label>
-      <label htmlFor="first-letter">
-        <input
-          type="radio"
-          name="filter"
-          id="first-letter"
-          data-testid="first-letter-search-radio"
-          onChange={ handleChangeRadioButton }
-        />
-        First Letter
-      </label>
-    </>);
+        <button
+          type="button"
+          className="sidebar-search-btn"
+          data-testid="exec-search-btn"
+          onClick={ handleSubmit }
+        >
+          Search
+        </button>
+      </div>
+      <div className="search-type-container">
+        <label
+          className="search-type-option"
+          htmlFor="ingredient"
+        >
+          <input
+            type="radio"
+            name="filter"
+            id="ingredient"
+            data-testid="ingredient-search-radio"
+            onChange={ handleChangeRadioButton }
+          />
+          Ingredient
+        </label>
+        <label
+          className="search-type-option"
+          htmlFor="name"
+        >
+          <input
+            type="radio"
+            name="filter"
+            id="name"
+            data-testid="name-search-radio"
+            onChange={ handleChangeRadioButton }
+          />
+          Name
+        </label>
+        <label
+          className="search-type-option"
+          htmlFor="first-letter"
+        >
+          <input
+            type="radio"
+            name="filter"
+            id="first-letter"
+            data-testid="first-letter-search-radio"
+            onChange={ handleChangeRadioButton }
+          />
+          First Letter
+        </label>
+      </div>
+    </div>);
 }
 
 SearchBar.propTypes = {
