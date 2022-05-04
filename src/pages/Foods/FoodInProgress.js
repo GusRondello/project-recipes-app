@@ -82,7 +82,6 @@ function FoodInProgress() {
   const {
     strMealThumb,
     idMeal,
-    strArea,
     strMeal,
     strCategory,
     strInstructions,
@@ -197,7 +196,7 @@ function FoodInProgress() {
       <button
         type="button"
         data-testid="favorite-btn"
-        onClick={ () => handleFavButton(strArea, favorite, setFavorite) }
+        onClick={ () => handleFavButton(recipe, favorite, setFavorite) }
         src={ favorite ? blackHeart : whiteHeart }
       >
         {
