@@ -125,13 +125,11 @@ function FoodInProgress() {
               [`${i}-checkbox`]: false,
             }));
           }
-          // if (inProgressRecipes.meals !== undefined && inProgressRecipes.meals !== []) {
           setInputs((prevState) => ({
             ...prevState,
             ...inProgressRecipes.meals[idMeal],
           }));
         }
-        // }
       };
       getIngredientsList();
     }, [recipe, idMeal, inProgressRecipes.meals],

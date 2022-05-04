@@ -11,6 +11,7 @@ import '../../styles/InProgress.css';
 function DrinkInProgress() {
   const [drink, setDrink] = useState([]);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
+  const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
   const history = useHistory();
   const [favorite, setFavorite] = useState(false);
   const [inputs, setInputs] = useState({});
@@ -59,11 +60,26 @@ function DrinkInProgress() {
               ...prevState,
               [`${i}-checkbox`]: false,
             }));
+            setInputs((prevState) => ({
+              ...prevState,
+              ...inProgressRecipes.cocktails[idDrink],
+            }));
           }
         }
       };
       getIngredientsList();
-    }, [drink],
+    }, [drink, idDrink, inProgressRecipes],
+  );
+
+  useEffect(
+    () => {
+      const newState = {
+        cocktails: {
+          [idDrink]: { ...inputs },
+        },
+      };
+      window.localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
+    }, [idDrink, inputs],
   );
 
   const handleCheckbox = ({ target }) => {
@@ -83,7 +99,7 @@ function DrinkInProgress() {
         const checkbox = (
           <label
             className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
-            data-testid="ingredient-step"
+            data-testid={ `${i - 1}-ingredient-step` }
             htmlFor={ `${i}-checkbox` }
             key={ i }
           >
