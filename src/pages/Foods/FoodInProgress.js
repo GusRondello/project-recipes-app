@@ -11,11 +11,7 @@ import '../../styles/InProgress.css';
 function FoodInProgress() {
   const [recipe, setRecipe] = useState([]);
   const [favorite, setFavorite] = useState(false);
-  const [inputs, setInputs] = useState({});
-  const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
-  const { id } = useParams();
-  const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
-
+  const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
   const {
     strMealThumb,
     idMeal,
@@ -24,7 +20,12 @@ function FoodInProgress() {
     strCategory,
     strInstructions,
   } = recipe;
+  const [inputs, setInputs] = useState({});
+  const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
+  const { id } = useParams();
+  const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
 
+  // console.log(inProgressRecipes.meals[idMeal]);
   useEffect(
     () => {
       const fetchRecipeById = async () => {
@@ -71,6 +72,13 @@ function FoodInProgress() {
       ...prevState,
       [name]: checked,
     }));
+
+    const newState = {
+      meals: {
+        [idMeal]: { ...inputs },
+      },
+    };
+    window.localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
   };
 
   const getIngredientsAndMeasure = () => {
