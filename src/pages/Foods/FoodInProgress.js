@@ -11,7 +11,7 @@ import '../../styles/InProgress.css';
 function FoodInProgress() {
   const [recipe, setRecipe] = useState([]);
   const [favorite, setFavorite] = useState(false);
-  const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
+
   const {
     strMealThumb,
     idMeal,
@@ -20,6 +20,7 @@ function FoodInProgress() {
     strCategory,
     strInstructions,
   } = recipe;
+  const inProgressRecipes = JSON.parse(window.localStorage.getItem('inProgressRecipes'));
   const [inputs, setInputs] = useState({});
   const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
   const { id } = useParams();
@@ -59,10 +60,31 @@ function FoodInProgress() {
               [`${i}-checkbox`]: false,
             }));
           }
+          if (inProgressRecipes.meals !== undefined && inProgressRecipes.meals !== []) {
+            setInputs((prevState) => ({
+              ...prevState,
+              ...inProgressRecipes.meals[idMeal],
+            }));
+          }
         }
       };
       getIngredientsList();
-    }, [recipe],
+    }, [recipe, idMeal],
+  );
+
+  useEffect(
+    () => {
+      const TIMER = 300;
+
+      setTimeout(() => {
+        const newState = {
+          meals: {
+            [idMeal]: { ...inputs },
+          },
+        };
+        window.localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
+      }, TIMER);
+    }, [idMeal, inputs],
   );
 
   const handleCheckbox = ({ target }) => {
@@ -72,13 +94,6 @@ function FoodInProgress() {
       ...prevState,
       [name]: checked,
     }));
-
-    const newState = {
-      meals: {
-        [idMeal]: { ...inputs },
-      },
-    };
-    window.localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
   };
 
   const getIngredientsAndMeasure = () => {
@@ -101,6 +116,7 @@ function FoodInProgress() {
             <input
               name={ `${i}-checkbox` }
               id={ `${i}-checkbox` }
+              checked={ inputs[`${i}-checkbox`] }
               onChange={ handleCheckbox }
               type="checkbox"
             />
