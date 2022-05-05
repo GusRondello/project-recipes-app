@@ -138,13 +138,29 @@ function DrinkInProgress() {
 
   useEffect(
     () => {
-      const newState = {
-        meals: inProgressRecipes.meals,
-        cocktails: {
-          [idDrink]: { ...inputs },
-        },
+      const saveLocalStorage = () => {
+        const idRecipeInProgess = JSON.parse(
+          localStorage.getItem('inProgressRecipes'),
+        );
+        if (idRecipeInProgess && idDrink) {
+          const newState = {
+            meals: inProgressRecipes.meals,
+            cocktails: {
+              ...idRecipeInProgess.cocktails, [idDrink]: { ...inputs },
+            },
+          };
+          localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
+        } else if (idDrink) {
+          const newState = {
+            meals: inProgressRecipes.meals,
+            cocktails: {
+              [idDrink]: { ...inputs },
+            },
+          };
+          localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
+        }
       };
-      window.localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
+      saveLocalStorage();
     }, [idDrink, inProgressRecipes.meals, inputs],
   );
 

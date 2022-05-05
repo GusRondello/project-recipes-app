@@ -6,6 +6,24 @@ function DoneRecipes() {
   const pageTitle = 'Done Recipes';
   return (
     <div>
+      <button
+        type="button"
+        data-testid="filter-by-all-btn"
+      >
+        All
+      </button>
+      <button
+        type="button"
+        data-testid="filter-by-food-btn"
+      >
+        Food
+      </button>
+      <button
+        type="button"
+        data-testid="filter-by-drink-btn"
+      >
+        Drinks
+      </button>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
     </div>
   );
