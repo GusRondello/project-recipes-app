@@ -8,6 +8,72 @@ import shareIcon from '../../images/shareIcon.svg';
 import whiteHeart from '../../images/whiteHeartIcon.svg';
 import '../../styles/InProgress.css';
 
+function getIngredientsAndMeasure(handleCheckbox, recipe, inputs) {
+  const twenty = 20;
+  const ingredientsAndMeasure = [];
+  for (let i = 1; i < twenty; i += 1) {
+    if (recipe[`strIngredient${i}`]) {
+      const checkbox = (
+        <label
+          className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
+          data-testid={ `${i - 1}-ingredient-step` }
+          htmlFor={ `${i}-checkbox` }
+          key={ i }
+        >
+          {recipe[`strIngredient${i}`]}
+          {' '}
+          -
+          {' '}
+          {recipe[`strMeasure${i}`]}
+          <input
+            name={ `${i}-checkbox` }
+            id={ `${i}-checkbox` }
+            checked={ !!inputs[`${i}-checkbox`] }
+            onChange={ handleCheckbox }
+            type="checkbox"
+          />
+        </label>
+
+      );
+      ingredientsAndMeasure.push(checkbox);
+    }
+  }
+  return ingredientsAndMeasure;
+}
+
+function handleFavButton(recipe, favorite, setFavorite) {
+  setFavorite((prevState) => !prevState);
+  const {
+    strDrinkThumb,
+    idDrink,
+    strAlcoholic,
+    strDrink,
+    strCategory,
+  } = recipe;
+
+  if (!favorite) {
+    const newFavoriteList = [
+      {
+        id: idDrink,
+        type: 'drink',
+        nationality: '',
+        category: strCategory,
+        alcoholicOrNot: strAlcoholic,
+        name: strDrink,
+        image: strDrinkThumb,
+      }];
+
+    window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
+  } else {
+    window.localStorage.setItem('favoriteRecipes', JSON.stringify([{}]));
+  }
+}
+
+const handleShareButton = (idDrink) => {
+  clipboardCopy(`http://localhost:3000/drinks/${idDrink}`);
+  toast.success('Link copied!');
+};
+
 function DrinkInProgress() {
   const [drink, setDrink] = useState([]);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
@@ -23,7 +89,6 @@ function DrinkInProgress() {
     idDrink,
     strDrinkThumb,
     strDrink,
-    strCategory,
     strAlcoholic,
     strInstructions,
   } = drink;
@@ -74,12 +139,13 @@ function DrinkInProgress() {
   useEffect(
     () => {
       const newState = {
+        meals: inProgressRecipes.meals,
         cocktails: {
           [idDrink]: { ...inputs },
         },
       };
       window.localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
-    }, [idDrink, inputs],
+    }, [idDrink, inProgressRecipes.meals, inputs],
   );
 
   const handleCheckbox = ({ target }) => {
@@ -89,39 +155,6 @@ function DrinkInProgress() {
       ...prevState,
       [name]: checked,
     }));
-  };
-
-  const getIngredientsAndMeasure = () => {
-    const twenty = 20;
-    const ingredientsAndMeasure = [];
-    for (let i = 1; i < twenty; i += 1) {
-      if (drink[`strIngredient${i}`]) {
-        const checkbox = (
-          <label
-            className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
-            data-testid={ `${i - 1}-ingredient-step` }
-            htmlFor={ `${i}-checkbox` }
-            key={ i }
-          >
-            {drink[`strIngredient${i}`]}
-            {' '}
-            -
-            {' '}
-            {drink[`strMeasure${i}`]}
-            <input
-              name={ `${i}-checkbox` }
-              id={ `${i}-checkbox` }
-              type="checkbox"
-              checked={ !!inputs[`${i}-checkbox`] }
-              onChange={ handleCheckbox }
-            />
-          </label>
-
-        );
-        ingredientsAndMeasure.push(checkbox);
-      }
-    }
-    return ingredientsAndMeasure;
   };
 
   useEffect(
@@ -139,32 +172,6 @@ function DrinkInProgress() {
     }, [inputs],
   );
 
-  const handleShareButton = () => {
-    clipboardCopy(`http://localhost:3000/drinks/${idDrink}`);
-    toast.success('Link copied!');
-  };
-
-  const handleFavButton = () => {
-    setFavorite((prevState) => !prevState);
-
-    if (!favorite) {
-      const newFavoriteList = [
-        {
-          id: idDrink,
-          type: 'drink',
-          nationality: '',
-          category: strCategory,
-          alcoholicOrNot: strAlcoholic,
-          name: strDrink,
-          image: strDrinkThumb,
-        }];
-
-      window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
-    } else {
-      window.localStorage.setItem('favoriteRecipes', JSON.stringify([{}]));
-    }
-  };
-
   const handleFinishRecipeBtn = () => {
     history.push('/done-recipes');
   };
@@ -181,7 +188,7 @@ function DrinkInProgress() {
       <button
         type="button"
         data-testid="share-btn"
-        onClick={ handleShareButton }
+        onClick={ () => handleShareButton(idDrink) }
 
       >
         <img src={ shareIcon } alt="share icon" />
@@ -190,7 +197,7 @@ function DrinkInProgress() {
       <button
         type="button"
         data-testid="favorite-btn"
-        onClick={ handleFavButton }
+        onClick={ () => handleFavButton(drink, favorite, setFavorite) }
         src={ favorite ? blackHeart : whiteHeart }
       >
         {
@@ -200,7 +207,7 @@ function DrinkInProgress() {
         }
       </button>
       <p data-testid="recipe-category">{ strAlcoholic }</p>
-      <div>{ getIngredientsAndMeasure() }</div>
+      <div>{drink && getIngredientsAndMeasure(handleCheckbox, drink, inputs)}</div>
       <p data-testid="instructions">{ strInstructions }</p>
       <button
         disabled={ isButtonDisabled }

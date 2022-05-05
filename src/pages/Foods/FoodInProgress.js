@@ -138,12 +138,13 @@ function FoodInProgress() {
   useEffect(
     () => {
       const newState = {
+        cocktails: inProgressRecipes.cocktails,
         meals: {
           [idMeal]: { ...inputs },
         },
       };
       window.localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
-    }, [idMeal, inputs],
+    }, [idMeal, inProgressRecipes.cocktails, inputs],
   );
 
   useEffect(
