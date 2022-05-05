@@ -28,7 +28,7 @@ function getIngredientsAndMeasure(handleCheckbox, recipe, inputs) {
           <input
             name={ `${i}-checkbox` }
             id={ `${i}-checkbox` }
-            checked={ !!inputs[`${i}-checkbox`] }
+            defaultChecked={ !!inputs[`${i}-checkbox`] }
             onChange={ handleCheckbox }
             type="checkbox"
           />
