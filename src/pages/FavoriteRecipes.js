@@ -33,11 +33,28 @@ function FavoriteRecipes() {
                 src={ recipe.image }
                 alt={ recipe.name }
               />
-              <p data-testid={ `${index}-horizontal-top-text` }>{recipe.category}</p>
+              {
+                recipe.type === 'food'
+                  ? (
+                    <p
+                      data-testid={ `${index}-horizontal-top-text` }
+                    >
+                      {`${recipe.nationality} - ${recipe.category}`}
+
+                    </p>
+                  )
+                  : (
+                    <p data-testid={ `${index}-horizontal-top-text` }>
+                      {recipe.alcoholicOrNot}
+
+                    </p>
+                  )
+              }
               <h2 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h2>
               <button
                 type="button"
                 data-testid={ `${index}-horizontal-share-btn` }
+                src={ shareIcon }
                 // onClick={ handleShareButton }
               >
                 <img src={ shareIcon } alt="share icon" />
