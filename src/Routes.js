@@ -23,12 +23,13 @@ const Routes = () => (
     <Route component={ Login } path="/" exact />
     <Route component={ Foods } path="/foods" exact />
     <Route component={ Drinks } path="/drinks" exact />
-    <Route component={ FoodDetails } path="/foods/:id" />
+    <Route component={ FoodDetails } exact path="/foods/:id" />
     <Route
+      exact
       path="/drinks/:id"
       render={ (props) => <DrinkDetails { ...props } /> }
     />
-    <Route component={ FoodInProgress } path="/foods/:id/in-progress" />
+    <Route component={ FoodInProgress } exact path="/foods/:id/in-progress" />
     <Route component={ DrinkInProgress } path="/drinks/:id/in-progress" />
     <Route component={ Explore } path="/explore" exact />
     <Route component={ ExploreFoods } path="/explore/foods" exact />
