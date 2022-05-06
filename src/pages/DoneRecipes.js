@@ -28,6 +28,7 @@ function DoneRecipes() {
       >
         Drinks
       </button>
+      {console.log(doneRecipesDrinks)}
       { doneRecipesDrinks
       && doneRecipesDrinks.map((recipe, index) => (
         <div key={ recipe.name }>
@@ -36,19 +37,7 @@ function DoneRecipes() {
             data-testid={ `${index}-horizontal-image` }
             alt="Receita"
           />
-          <h2 data-testid={ `${index}-horizontal-done-date` }>{ recipe.id }</h2>
-          <p data-testid={ `${index}-horizontal-top-text` }>
-            { recipe.category }
-          </p>
           <p data-testid={ `${index}-horizontal-name` }>{ recipe.name }</p>
-          <button
-            type="button"
-            data-testid={ `${index}-horizontal-share-btn` }
-            onClick={ () => handleShareButton(idDrink) }
-          >
-            <img src={ shareIcon } alt="share icon" />
-
-          </button>
           { recipe.tags !== null && recipe.tags.map((tag) => (
             <p
               data-testid={ `${index}-${tag}-horizontal-tag` }
@@ -57,6 +46,35 @@ function DoneRecipes() {
               { tag }
             </p>
           )) }
+          <h2 data-testid={ `${index}-horizontal-done-date` }>{ recipe.doneDate }</h2>
+          <p>
+            { recipe.category }
+          </p>
+
+          <button
+            type="button"
+            data-testid={ `${index}-horizontal-share-btn` }
+            onClick={ () => handleShareButton(idDrink) }
+            src={ shareIcon }
+          >
+            <img src={ shareIcon } alt="share icon" />
+
+          </button>
+          {recipe.type === 'drink'
+            ? (
+              <p
+                data-testid={ `${index}-horizontal-top-text` }
+              >
+                {`${recipe.alcoholicOrNot} - ${recipe.category}`}
+              </p>
+            )
+            : (
+              <p
+                data-testid={ `${index}-horizontal-top-text` }
+              >
+                {`${recipe.nationality} - ${recipe.category}`}
+              </p>)}
+
         </div>
       ))}
     </div>
