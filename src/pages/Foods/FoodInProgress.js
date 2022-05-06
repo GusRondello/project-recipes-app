@@ -1,11 +1,12 @@
 import clipboardCopy from 'clipboard-copy';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeart from '../../images/whiteHeartIcon.svg';
+import { saveRecipesFoodInProgress, saveRecipesDone } from '../../redux/action/index';
 import '../../styles/InProgress.css';
 
 function getIngredientsAndMeasure(handleCheckbox, recipe, inputs) {
@@ -28,7 +29,7 @@ function getIngredientsAndMeasure(handleCheckbox, recipe, inputs) {
           <input
             name={ `${i}-checkbox` }
             id={ `${i}-checkbox` }
-            checked={ !!inputs[`${i}-checkbox`] }
+            defaultChecked={ !!inputs[`${i}-checkbox`] }
             onChange={ handleCheckbox }
             type="checkbox"
           />
@@ -75,10 +76,17 @@ const handleShareButton = (idMeal) => {
 };
 
 function FoodInProgress() {
+  const dispatch = useDispatch();
   const [recipe, setRecipe] = useState([]);
   const [favorite, setFavorite] = useState(false);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const history = useHistory();
+  const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
+  const [inputs, setInputs] = useState({});
+  const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
+  const { id } = useParams();
+  const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+
   const {
     strMealThumb,
     idMeal,
@@ -86,11 +94,6 @@ function FoodInProgress() {
     strCategory,
     strInstructions,
   } = recipe;
-  const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
-  const [inputs, setInputs] = useState({});
-  const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
-  const { id } = useParams();
-  const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
 
   useEffect(
     () => {
@@ -132,19 +135,40 @@ function FoodInProgress() {
         }
       };
       getIngredientsList();
-    }, [recipe, idMeal, inProgressRecipes.meals],
+    }, [recipe, idMeal],
   );
 
   useEffect(
     () => {
-      const newState = {
-        cocktails: inProgressRecipes.cocktails,
-        meals: {
-          [idMeal]: { ...inputs },
-        },
+      const saveLocalStorage = () => {
+        const idRecipeInProgess = JSON.parse(
+          localStorage.getItem('inProgressRecipes'),
+        );
+        if (idRecipeInProgess && idMeal) {
+          const newState = {
+            meals: {
+              ...idRecipeInProgess.meals, [idMeal]: { ...inputs },
+            },
+            cocktails: inProgressRecipes.cocktails,
+          };
+          localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
+          dispatch(saveRecipesFoodInProgress(newState));
+        } else if (idMeal) {
+          const newState = {
+            meals: {
+              [idMeal]: { ...inputs },
+            },
+            cocktails: inProgressRecipes.cocktails,
+          };
+          localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
+          const newRecipesInProgress = JSON.parse(
+            localStorage.getItem('inProgressRecipes'),
+          );
+          dispatch(saveRecipesFoodInProgress(newRecipesInProgress));
+        }
       };
-      window.localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
-    }, [idMeal, inProgressRecipes.cocktails, inputs],
+      saveLocalStorage();
+    }, [idMeal, inputs],
   );
 
   useEffect(
@@ -172,6 +196,32 @@ function FoodInProgress() {
   };
 
   const handleFinishRecipeBtn = () => {
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    const formatedDay = today.toDateString();
+    console.log(recipe);
+    const newDoneRecipe = {
+      id: recipe.idMeal,
+      type: 'food',
+      category: recipe.strCategory,
+      nacionality: recipe.strArea,
+      name: recipe.strMeal,
+      image: recipe.strMealThumb,
+      doneDate: formatedDay,
+      tags: recipe.strTags !== null ? recipe.strTags.split(',') : null,
+    };
+    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (doneRecipes) {
+      const recipes = [
+        ...doneRecipes,
+        newDoneRecipe,
+      ];
+      localStorage.setItem('doneRecipes', JSON.stringify(recipes));
+      dispatch(saveRecipesDone(recipes));
+    } else {
+      localStorage.setItem('doneRecipes', JSON.stringify([newDoneRecipe]));
+      dispatch(saveRecipesDone([newDoneRecipe]));
+    }
     history.push('/done-recipes');
   };
 

@@ -6,6 +6,9 @@ export const REQUEST_DRINKS = 'REQUEST_DRINKS';
 export const RECEIVE_DRINKS = 'RECEIVE_DRINKS';
 export const SELECTED_FOOD_INGREDIENT = 'SELECTED_FOOD_INGREDIENT';
 export const SELECTED_DRINK_INGREDIENT = 'SELECTED_DRINK_INGREDIENT';
+export const RECIPES_DRINK_IN_PROGRESS = 'RECIPES_DRINK_IN_PROGRESS';
+export const RECIPES_FOOD_IN_PROGRESS = 'RECIPES_FOOD_IN_PROGRESS';
+export const RECIPES_DONE = 'RECIPES_DONE';
 
 export const saveFilterRecipeFood = (searchWord, searchType) => ({
   type: FILTER_FOOD,
@@ -84,3 +87,18 @@ export function RequestDrinkAPI(type, query) {
       .then((drink) => dispatch(receiveDrinks(drink.drinks)));
   };
 }
+
+export const saveRecipesDrinkInProgress = (recipesIds) => ({
+  type: RECIPES_DRINK_IN_PROGRESS,
+  recipesIds,
+});
+
+export const saveRecipesFoodInProgress = (recipesIds) => ({
+  type: RECIPES_FOOD_IN_PROGRESS,
+  recipesIds,
+});
+
+export const saveRecipesDone = (recipes) => ({
+  type: RECIPES_DONE,
+  recipes,
+});

@@ -72,6 +72,12 @@ function DrinkDetails({ history }) {
       setRecipeDone(checkIfIsDone);
     }, [idDrink, doneRecipes],
   );
+  const selectButton = () => {
+    if (inProgressIds.some((inProgressId) => inProgressId === idDrink)) {
+      return 'Continue Recipe';
+    }
+    return 'Start Recipe';
+  }
 
   const getIngredientsAndMeasure = () => {
     const twenty = 20;
@@ -163,13 +169,9 @@ function DrinkDetails({ history }) {
             data-testid="start-recipe-btn"
             onClick={ handleStartRecipe }
           >
-            {
-              inProgressIds
-                .some((inProgressId) => inProgressId === idDrink)
-                ? 'Continue Recipe'
-                : 'Start Recipe'
-            }
-
+            {console.log(inProgressIds)}
+            {console.log(idDrink)}
+            { selectButton() }
           </button>)
       }
     </section>
