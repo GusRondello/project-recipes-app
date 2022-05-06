@@ -5,16 +5,17 @@ import { toast } from 'react-toastify';
 import Header from '../components/Header';
 import blackHeart from '../images/blackHeartIcon.svg';
 import shareIcon from '../images/shareIcon.svg';
-import whiteHeart from '../images/whiteHeartIcon.svg';
 
 function FavoriteRecipes() {
   const componentName = 'favorite-recipes';
-  const [favorite, setFavorite] = useState(true);
-  const pageTitle = 'Favorite Recipes';
   const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
+  const [recipes, setRecipes] = useState(favoriteRecipes);
+  const pageTitle = 'Favorite Recipes';
 
-  const handleFavButton = () => {
-    setFavorite((prevState) => !prevState);
+  const handleFavButton = ({ target }) => {
+    const removeFavorite = recipes.filter((recipe) => recipe.id !== target.id);
+    setRecipes(removeFavorite);
+    window.localStorage.setItem('favoriteRecipes', JSON.stringify(removeFavorite));
   };
 
   const handleShareButton = ({ target }) => {
@@ -34,8 +35,8 @@ function FavoriteRecipes() {
       </nav>
       <div>
         {
-          favoriteRecipes
-          && favoriteRecipes.map((recipe, index) => (
+          recipes.length !== 0
+          && recipes.map((recipe, index) => (
             <div key={ recipe.id }>
               <img
                 data-testid={ `${index}-horizontal-image` }
@@ -80,13 +81,14 @@ function FavoriteRecipes() {
                 type="button"
                 data-testid={ `${index}-horizontal-favorite-btn` }
                 onClick={ handleFavButton }
-                src={ favorite ? blackHeart : whiteHeart }
+                id={ recipe.id }
+                src={ blackHeart }
               >
-                {
-                  favorite
-                    ? <img src={ blackHeart } alt="black heart" />
-                    : <img src={ whiteHeart } alt="white heart" />
-                }
+                <img
+                  id={ recipe.id }
+                  src={ blackHeart }
+                  alt="black heart"
+                />
               </button>
             </div>
           ))
