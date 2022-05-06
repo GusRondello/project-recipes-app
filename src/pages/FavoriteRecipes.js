@@ -1,6 +1,7 @@
 import clipboardCopy from 'clipboard-copy';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Header from '../components/Header';
 import blackHeart from '../images/blackHeartIcon.svg';
@@ -73,11 +74,14 @@ function FavoriteRecipes() {
           recipes.length !== 0
           && recipes.map((recipe, index) => (
             <div key={ recipe.id }>
-              <img
-                data-testid={ `${index}-horizontal-image` }
-                src={ recipe.image }
-                alt={ recipe.name }
-              />
+              <Link to={ `/${recipe.type}s/${recipe.id}` }>
+                <img
+                  className="meal_image"
+                  data-testid={ `${index}-horizontal-image` }
+                  src={ recipe.image }
+                  alt={ recipe.name }
+                />
+              </Link>
               {
                 recipe.type === 'food'
                   ? (
@@ -95,7 +99,16 @@ function FavoriteRecipes() {
                     </p>
                   )
               }
-              <h2 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h2>
+              <Link to={ `/${recipe.type}s/${recipe.id}` }>
+                <h2
+                  data-testid={ `${index}-horizontal-name` }
+                  name={ recipe.type }
+                  id={ recipe.id }
+                >
+                  {recipe.name}
+
+                </h2>
+              </Link>
               <button
                 type="button"
                 data-testid={ `${index}-horizontal-share-btn` }
