@@ -1,5 +1,7 @@
+import clipboardCopy from 'clipboard-copy';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import Header from '../components/Header';
 import blackHeart from '../images/blackHeartIcon.svg';
 import shareIcon from '../images/shareIcon.svg';
@@ -13,6 +15,13 @@ function FavoriteRecipes() {
 
   const handleFavButton = () => {
     setFavorite((prevState) => !prevState);
+  };
+
+  const handleShareButton = ({ target }) => {
+    toast.success('Link copied!');
+    console.log(target);
+    const { name, id } = target;
+    clipboardCopy(`http://localhost:3000/${name}s/${id}`);
   };
 
   return (
@@ -55,9 +64,16 @@ function FavoriteRecipes() {
                 type="button"
                 data-testid={ `${index}-horizontal-share-btn` }
                 src={ shareIcon }
-                // onClick={ handleShareButton }
+                name={ recipe.type }
+                value={ recipe.id }
+                onClick={ handleShareButton }
               >
-                <img src={ shareIcon } alt="share icon" />
+                <img
+                  name={ recipe.type }
+                  id={ recipe.id }
+                  src={ shareIcon }
+                  alt="share icon"
+                />
 
               </button>
               <button
