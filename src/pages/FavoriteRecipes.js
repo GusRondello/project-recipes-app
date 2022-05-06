@@ -25,13 +25,48 @@ function FavoriteRecipes() {
     clipboardCopy(`http://localhost:3000/${name}s/${id}`);
   };
 
+  const handleAllFilter = () => {
+    setRecipes(favoriteRecipes);
+  };
+
+  const handleFilterFoods = () => {
+    const foods = recipes.filter((recipe) => recipe.type === 'food');
+    setRecipes(foods);
+  };
+
+  const handleFilterDrinks = () => {
+    const drinks = recipes.filter((recipe) => recipe.type === 'drink');
+    setRecipes(drinks);
+  };
+
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
       <nav>
-        <button type="button" data-testid="filter-by-all-btn">All</button>
-        <button type="button" data-testid="filter-by-food-btn">Food</button>
-        <button type="button" data-testid="filter-by-drink-btn">Drink</button>
+        <button
+          type="button"
+          data-testid="filter-by-all-btn"
+          onClick={ handleAllFilter }
+        >
+          All
+
+        </button>
+        <button
+          type="button"
+          data-testid="filter-by-food-btn"
+          onClick={ handleFilterFoods }
+        >
+          Food
+
+        </button>
+        <button
+          type="button"
+          data-testid="filter-by-drink-btn"
+          onClick={ handleFilterDrinks }
+        >
+          Drink
+
+        </button>
       </nav>
       <div>
         {
