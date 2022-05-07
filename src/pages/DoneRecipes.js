@@ -58,56 +58,56 @@ function DoneRecipes() {
       >
         Drinks
       </button>
-      { doneRecipes !== []
-      && doneRecipes.map((recipe, index) => (
-        <div key={ recipe.name }>
-          <Link to={ `${recipe.type}s/${recipe.id}` }>
-            <img
-              src={ recipe.image }
-              data-testid={ `${index}-horizontal-image` }
-              alt="Receita"
-            />
-            <p data-testid={ `${index}-horizontal-name` }>{ recipe.name }</p>
-          </Link>
-          { recipe.tags !== null && recipe.tags.map((tag) => (
-            <p
-              data-testid={ `${index}-${tag}-horizontal-tag` }
-              key={ tag }
-            >
-              { tag }
-            </p>
-          )) }
-          <h2 data-testid={ `${index}-horizontal-done-date` }>{ recipe.doneDate }</h2>
-          <p>
-            { recipe.category }
-          </p>
-
-          <button
-            type="button"
-            data-testid={ `${index}-horizontal-share-btn` }
-            onClick={ () => handleShareButton(recipe.id) }
-            src={ shareIcon }
-          >
-            <img src={ shareIcon } alt="share icon" />
-
-          </button>
-          {recipe.type === 'drink'
-            ? (
+      { doneRecipes !== [] && doneRecipes !== null
+        ? doneRecipes.map((recipe, index) => (
+          <div key={ recipe.name }>
+            <Link to={ `${recipe.type}s/${recipe.id}` }>
+              <img
+                src={ recipe.image }
+                data-testid={ `${index}-horizontal-image` }
+                alt="Receita"
+              />
+              <p data-testid={ `${index}-horizontal-name` }>{ recipe.name }</p>
+            </Link>
+            { recipe.tags !== null && recipe.tags.map((tag) => (
               <p
-                data-testid={ `${index}-horizontal-top-text` }
+                data-testid={ `${index}-${tag}-horizontal-tag` }
+                key={ tag }
               >
-                {`${recipe.alcoholicOrNot} - ${recipe.category}`}
+                { tag }
               </p>
-            )
-            : (
-              <p
-                data-testid={ `${index}-horizontal-top-text` }
-              >
-                {`${recipe.nationality} - ${recipe.category}`}
-              </p>)}
+            )) }
+            <h2 data-testid={ `${index}-horizontal-done-date` }>{ recipe.doneDate }</h2>
+            <p>
+              { recipe.category }
+            </p>
 
-        </div>
-      ))}
+            <button
+              type="button"
+              data-testid={ `${index}-horizontal-share-btn` }
+              onClick={ () => handleShareButton(recipe.id) }
+              src={ shareIcon }
+            >
+              <img src={ shareIcon } alt="share icon" />
+
+            </button>
+            {recipe.type === 'drink'
+              ? (
+                <p
+                  data-testid={ `${index}-horizontal-top-text` }
+                >
+                  {`${recipe.alcoholicOrNot} - ${recipe.category}`}
+                </p>
+              )
+              : (
+                <p
+                  data-testid={ `${index}-horizontal-top-text` }
+                >
+                  {`${recipe.nationality} - ${recipe.category}`}
+                </p>)}
+
+          </div>))
+        : null}
     </div>
   );
 }
