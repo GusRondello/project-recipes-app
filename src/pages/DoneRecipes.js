@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clipboardCopy from 'clipboard-copy';
 import { toast } from 'react-toastify';
 import Header from '../components/Header';
@@ -7,11 +7,30 @@ import shareIcon from '../images/shareIcon.svg';
 function DoneRecipes() {
   const componentName = 'done-recipes';
   const pageTitle = 'Done Recipes';
-  const doneRecipesDrinks = JSON.parse(localStorage.getItem('doneRecipes'));
+  const [doneRecipes, changeDoneRecipe] = useState([]);
+  const recipes = JSON.parse(localStorage.getItem('doneRecipes'));
 
   const handleShareButton = (id) => {
     clipboardCopy(`http://localhost:3000/foods/${id}`);
     toast.success('Link copied!');
+  };
+
+  useEffect(() => {
+    changeDoneRecipe(recipes);
+  }, []);
+
+  const filterByFood = () => {
+    const foodRecipes = recipes.filter((recipe) => recipe.type !== 'drink');
+    changeDoneRecipe(foodRecipes);
+  };
+
+  const filterByDrink = () => {
+    const foodRecipes = recipes.filter((recipe) => recipe.type !== 'food');
+    changeDoneRecipe(foodRecipes);
+  };
+
+  const getAllRecipes = () => {
+    changeDoneRecipe(recipes);
   };
 
   return (
@@ -20,24 +39,26 @@ function DoneRecipes() {
       <button
         type="button"
         data-testid="filter-by-all-btn"
+        onClick={ getAllRecipes }
       >
         All
       </button>
       <button
         type="button"
         data-testid="filter-by-food-btn"
+        onClick={ filterByFood }
       >
         Food
       </button>
       <button
         type="button"
         data-testid="filter-by-drink-btn"
+        onClick={ filterByDrink }
       >
         Drinks
       </button>
-      {console.log(doneRecipesDrinks)}
-      { doneRecipesDrinks
-      && doneRecipesDrinks.map((recipe, index) => (
+      { doneRecipes !== []
+      && doneRecipes.map((recipe, index) => (
         <div key={ recipe.name }>
           <img
             src={ recipe.image }

@@ -195,6 +195,7 @@ function DrinkInProgress() {
     const newDoneRecipe = {
       id: drink.idDrink,
       type: 'drink',
+      nationality: '',
       category: drink.strCategory,
       alcoholicOrNot: drink.strAlcoholic,
       name: drink.strDrink,
