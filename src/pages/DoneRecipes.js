@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import clipboardCopy from 'clipboard-copy';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 
@@ -60,12 +61,14 @@ function DoneRecipes() {
       { doneRecipes !== []
       && doneRecipes.map((recipe, index) => (
         <div key={ recipe.name }>
-          <img
-            src={ recipe.image }
-            data-testid={ `${index}-horizontal-image` }
-            alt="Receita"
-          />
-          <p data-testid={ `${index}-horizontal-name` }>{ recipe.name }</p>
+          <Link to={ `${recipe.type}s/${recipe.id}` }>
+            <img
+              src={ recipe.image }
+              data-testid={ `${index}-horizontal-image` }
+              alt="Receita"
+            />
+            <p data-testid={ `${index}-horizontal-name` }>{ recipe.name }</p>
+          </Link>
           { recipe.tags !== null && recipe.tags.map((tag) => (
             <p
               data-testid={ `${index}-${tag}-horizontal-tag` }

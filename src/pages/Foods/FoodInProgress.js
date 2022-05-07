@@ -199,7 +199,6 @@ function FoodInProgress() {
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
     const formatedDay = today.toDateString();
-    console.log(recipe);
     const newDoneRecipe = {
       id: recipe.idMeal,
       type: 'food',

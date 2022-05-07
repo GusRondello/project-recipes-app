@@ -170,8 +170,6 @@ function FoodDetails({ history }) {
             data-testid="start-recipe-btn"
             onClick={ handleStartRecipe }
           >
-            {console.log(inProgressIds)}
-            {console.log(idMeal)}
             {
               inProgressIds
                 .some((inProgressId) => inProgressId === idMeal)

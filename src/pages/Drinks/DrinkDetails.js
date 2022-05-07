@@ -169,8 +169,6 @@ function DrinkDetails({ history }) {
             data-testid="start-recipe-btn"
             onClick={ handleStartRecipe }
           >
-            {console.log(inProgressIds)}
-            {console.log(idDrink)}
             { selectButton() }
           </button>)
       }
