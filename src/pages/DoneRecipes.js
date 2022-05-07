@@ -1,4 +1,6 @@
 import React from 'react';
+import clipboardCopy from 'clipboard-copy';
+import { toast } from 'react-toastify';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 
@@ -6,6 +8,11 @@ function DoneRecipes() {
   const componentName = 'done-recipes';
   const pageTitle = 'Done Recipes';
   const doneRecipesDrinks = JSON.parse(localStorage.getItem('doneRecipes'));
+
+  const handleShareButton = (id) => {
+    clipboardCopy(`http://localhost:3000/foods/${id}`);
+    toast.success('Link copied!');
+  };
 
   return (
     <div>
@@ -54,7 +61,7 @@ function DoneRecipes() {
           <button
             type="button"
             data-testid={ `${index}-horizontal-share-btn` }
-            onClick={ () => handleShareButton(idDrink) }
+            onClick={ () => handleShareButton(recipe.id) }
             src={ shareIcon }
           >
             <img src={ shareIcon } alt="share icon" />
