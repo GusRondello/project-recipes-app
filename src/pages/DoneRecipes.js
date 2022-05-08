@@ -21,17 +21,23 @@ function DoneRecipes() {
   }, []);
 
   const filterByFood = () => {
-    const foodRecipes = recipes.filter((recipe) => recipe.type !== 'drink');
-    changeDoneRecipe(foodRecipes);
+    if (recipes) {
+      const foodRecipes = recipes.filter((recipe) => recipe.type !== 'drink');
+      changeDoneRecipe(foodRecipes);
+    }
   };
 
   const filterByDrink = () => {
-    const foodRecipes = recipes.filter((recipe) => recipe.type !== 'food');
-    changeDoneRecipe(foodRecipes);
+    if (recipes) {
+      const foodRecipes = recipes.filter((recipe) => recipe.type !== 'food');
+      changeDoneRecipe(foodRecipes);
+    }
   };
 
   const getAllRecipes = () => {
-    changeDoneRecipe(recipes);
+    if (recipes) {
+      changeDoneRecipe(recipes);
+    }
   };
 
   return (
