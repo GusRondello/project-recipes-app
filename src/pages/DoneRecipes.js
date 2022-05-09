@@ -11,9 +11,14 @@ function DoneRecipes() {
   const [doneRecipes, changeDoneRecipe] = useState([]);
   const recipes = JSON.parse(localStorage.getItem('doneRecipes'));
 
-  const handleShareButton = (id) => {
-    clipboardCopy(`http://localhost:3000/foods/${id}`);
-    toast.success('Link copied!');
+  const handleShareButton = (recipe) => {
+    if (recipe.type === 'food') {
+      clipboardCopy(`http://localhost:3000/foods/${recipe.id}`);
+      toast.success('Link copied!');
+    } else {
+      clipboardCopy(`http://localhost:3000/drinks/${recipe.id}`);
+      toast.success('Link copied!');
+    }
   };
 
   useEffect(() => {
@@ -91,7 +96,7 @@ function DoneRecipes() {
             <button
               type="button"
               data-testid={ `${index}-horizontal-share-btn` }
-              onClick={ () => handleShareButton(recipe.id) }
+              onClick={ () => handleShareButton(recipe) }
               src={ shareIcon }
             >
               <img src={ shareIcon } alt="share icon" />

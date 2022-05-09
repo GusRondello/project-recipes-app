@@ -68,8 +68,10 @@ function DrinkDetails({ history }) {
 
   useEffect(
     () => {
-      const checkIfIsDone = doneRecipes.some((recipe) => recipe.id === idDrink);
-      setRecipeDone(checkIfIsDone);
+      if (doneRecipes) {
+        const checkIfIsDone = doneRecipes.some((recipe) => recipe.id === idDrink);
+        setRecipeDone(checkIfIsDone);
+      }
     }, [idDrink, doneRecipes],
   );
   const selectButton = () => {

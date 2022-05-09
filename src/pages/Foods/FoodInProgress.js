@@ -7,40 +7,8 @@ import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeart from '../../images/whiteHeartIcon.svg';
 import { saveRecipesFoodInProgress, saveRecipesDone } from '../../redux/action/index';
+import { getIngredientsAndMeasures } from '../../services/service';
 import '../../styles/InProgress.css';
-
-function getIngredientsAndMeasure(handleCheckbox, recipe, inputs) {
-  const twenty = 20;
-  const ingredientsAndMeasure = [];
-  for (let i = 1; i < twenty; i += 1) {
-    if (recipe[`strIngredient${i}`]) {
-      const checkbox = (
-        <label
-          className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
-          data-testid={ `${i - 1}-ingredient-step` }
-          htmlFor={ `${i}-checkbox` }
-          key={ i }
-        >
-          {recipe[`strIngredient${i}`]}
-          {' '}
-          -
-          {' '}
-          {recipe[`strMeasure${i}`]}
-          <input
-            name={ `${i}-checkbox` }
-            id={ `${i}-checkbox` }
-            defaultChecked={ !!inputs[`${i}-checkbox`] }
-            onChange={ handleCheckbox }
-            type="checkbox"
-          />
-        </label>
-
-      );
-      ingredientsAndMeasure.push(checkbox);
-    }
-  }
-  return ingredientsAndMeasure;
-}
 
 function handleFavButton(recipe, favorite, setFavorite) {
   setFavorite((prevState) => !prevState);
@@ -79,19 +47,17 @@ function FoodInProgress() {
   const dispatch = useDispatch();
   const [recipe, setRecipe] = useState([]);
   const [favorite, setFavorite] = useState(false);
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
   const history = useHistory();
   const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
+  const [ingredientsAndMeasures, setIngredientsAndMeaures] = useState([]);
   const [inputs, setInputs] = useState({});
   const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
   const { id } = useParams();
   const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
 
   const {
-    strMealThumb,
-    idMeal,
-    strMeal,
-    strCategory,
+    strMealThumb, idMeal,
+    strMeal, strCategory,
     strInstructions,
   } = recipe;
 
@@ -120,19 +86,21 @@ function FoodInProgress() {
   useEffect(
     () => {
       const getIngredientsList = () => {
-        const twenty = 20;
-        for (let i = 1; i < twenty; i += 1) {
-          if (recipe[`strIngredient${i}`]) {
-            setInputs((prevState) => ({
-              ...prevState,
-              [`${i}-checkbox`]: false,
-            }));
-          }
-          setInputs((prevState) => ({
-            ...prevState,
-            ...inProgressRecipes.meals[idMeal],
-          }));
-        }
+        console.log(recipe);
+        const ingredients = getIngredientsAndMeasures(recipe);
+        console.log(ingredients);
+        setIngredientsAndMeaures(ingredients);
+        setInputs((prevState) => {
+          const myObject = {};
+          ingredients.forEach((_ingredient, index) => {
+            myObject[`${index}-checkbox`] = false;
+          });
+          return { ...prevState, ...myObject };
+        });
+        setInputs((prevState) => ({
+          ...prevState,
+          ...inProgressRecipes.meals[idMeal],
+        }));
       };
       getIngredientsList();
     }, [recipe, idMeal],
@@ -171,34 +139,22 @@ function FoodInProgress() {
     }, [idMeal, inputs],
   );
 
-  useEffect(
-    () => {
-      const checkButton = () => {
-        const inputValues = Object.values(inputs);
-        const checkedInputs = inputValues.every((input) => input === true);
-        if (checkedInputs) {
-          setButtonDisabled(false);
-        } else {
-          setButtonDisabled(true);
-        }
-      };
-      checkButton();
-    }, [inputs],
-  );
-
   const handleCheckbox = ({ target }) => {
     const { name, checked } = target;
 
-    setInputs((prevState) => ({
-      ...prevState,
-      [name]: checked,
-    }));
+    setInputs((prevState) => ({ ...prevState, [name]: checked }));
+  };
+
+  const isButtonDisabled = () => {
+    const inputValues = Object.values(inputs);
+    return inputValues.some((input) => input === false);
   };
 
   const handleFinishRecipeBtn = () => {
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
     const formatedDay = today.toDateString();
+
     const newDoneRecipe = {
       id: recipe.idMeal,
       type: 'food',
@@ -255,10 +211,29 @@ function FoodInProgress() {
         }
       </button>
       <p data-testid="recipe-category">{ strCategory }</p>
-      <div>{recipe && getIngredientsAndMeasure(handleCheckbox, recipe, inputs)}</div>
+      <div>
+        {recipe && ingredientsAndMeasures.map((instruction, i) => (
+          <label
+            className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
+            data-testid={ `${i - 1}-ingredient-step` }
+            htmlFor={ `${i}-checkbox` }
+            key={ i }
+          >
+            {instruction.ingredient}
+            {instruction.measure}
+            <input
+              name={ `${i}-checkbox` }
+              id={ `${i}-checkbox` }
+              defaultChecked={ !!inputs[`${i}-checkbox`] }
+              onChange={ handleCheckbox }
+              type="checkbox"
+            />
+          </label>
+        ))}
+      </div>
       <p data-testid="instructions">{ strInstructions }</p>
       <button
-        disabled={ isButtonDisabled }
+        disabled={ isButtonDisabled() }
         onClick={ handleFinishRecipeBtn }
         type="button"
         data-testid="finish-recipe-btn"
