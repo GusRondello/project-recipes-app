@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
+import '../styles/RecomendationCarousel.css';
 
 function DoneRecipes() {
   const componentName = 'done-recipes';
@@ -74,6 +75,7 @@ function DoneRecipes() {
           <div key={ recipe.name }>
             <Link to={ `${recipe.type}s/${recipe.id}` }>
               <img
+                className="meal_image"
                 src={ recipe.image }
                 data-testid={ `${index}-horizontal-image` }
                 alt="Receita"
