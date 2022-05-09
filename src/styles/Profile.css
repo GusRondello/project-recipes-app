@@ -1,0 +1,32 @@
+.page-profile {
+  background-color: #0b0b0d;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+
+.profile-email {
+  color: #d9c1ab;
+  display: flex;
+  font-size: 22px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.button-element {
+  background-color: rgb(217, 193, 171);
+  border: none;
+  border-radius: 5px;
+  color: #0b0b0d;
+  display: flex;
+  font-size: 22px;
+  justify-content: center;
+  margin-bottom: 14px;
+  padding: 4px;
+}

@@ -1,13 +1,13 @@
 header {
   align-items: center;
-  background-color: #fdcc3d;
+  background-color: #be967e;
   color: black;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 6px;
   padding-left: 30px;
   padding-right: 30px;
+  width: 100vw;
 }
 
 .search-btn {
