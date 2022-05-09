@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import { saveSelectedDrinkIngredient } from '../../redux/action';
+import '../../styles/Explore.css';
 
 const DOZE = 12;
 
@@ -37,22 +38,30 @@ function ExploreDrinkIngredients() {
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
-      {ingredients !== []
-        && ingredients.map((ingredient, index) => (
-          <button
-            type="button"
-            key={ index }
-            data-testid={ `${index}-ingredient-card` }
-            onClick={ () => handleClick(ingredient) }
-          >
-            <img
-              src={ `https://www.thecocktaildb.com/images/ingredients/${ingredient}-Small.png` }
-              data-testid={ `${index}-card-img` }
-              alt="ingredient"
-            />
-            <h1 data-testid={ `${index}-card-name` }>{ingredient}</h1>
-          </button>
-        )) }
+      <main className="explore-ingredients-container">
+        {ingredients !== []
+          && ingredients.map((ingredient, index) => (
+            <button
+              type="button"
+              className="ingredient-btn"
+              key={ index }
+              data-testid={ `${index}-ingredient-card` }
+              onClick={ () => handleClick(ingredient) }
+            >
+              <img
+                src={ `https://www.thecocktaildb.com/images/ingredients/${ingredient}-Small.png` }
+                data-testid={ `${index}-card-img` }
+                alt="ingredient"
+              />
+              <h1
+                className="ingredient-name"
+                data-testid={ `${index}-card-name` }
+              >
+                {ingredient}
+              </h1>
+            </button>
+          )) }
+      </main>
       <Footer />
     </div>
   );

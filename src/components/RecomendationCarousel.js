@@ -22,6 +22,7 @@ function RecomendationCarousel({ recomendations }) {
     >
       <div className="img_container">
         <img
+          className="image-recomendation"
           src={ recomendation?.strDrinkThumb || recomendation.strMealThumb }
           alt={ recomendation?.strDrink || recomendation.strMeal }
         />

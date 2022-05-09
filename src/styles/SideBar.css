@@ -1,0 +1,36 @@
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 12px;
+}
+
+.input-search-type {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.search-type-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.search-type-option {
+  margin-right: 5px;
+}
+
+.sidebar-search-btn {
+  background-color: black;
+  border: none;
+  border-radius: 5px;
+  box-shadow: none;
+  color: white;
+  margin-left: 6px;
+}
+
+.search-input {
+  border: 1px solid #d1d3d6;
+  border-radius: 5px;
+}

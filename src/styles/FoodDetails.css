@@ -1,19 +1,43 @@
-.recomendation_wrapper {
-  height: 172px;
-  width: 162px;
+.page-food-details {
+  width: 100vw;
 }
 
-.img_container {
+.header-conteiner {
   display: flex;
-  max-height: 50%;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.img_container img {
-  object-fit: cover;
-  overflow: hidden;
+.instructions {
+  width: 336px;
 }
 
 .start_recipe_btn {
+  background-color: red;
+  border: none;
+  border-radius: 5px;
   bottom: 0;
+  color: white;
+  padding: 5px;
   position: fixed;
+}
+
+.start_recipe_btn:hover {
+  background-color: white;
+  border: solid 1.5px red;
+  border-radius: 5px;
+  bottom: 0;
+  color: red;
+  padding: 5px;
+  position: fixed;
+}
+
+.meal_image {
+  height: 155px;
+  margin-bottom: 15px;
+}
+
+.favorite-btn, .share-btn {
+  background-color: transparent;
+  border: none;
 }

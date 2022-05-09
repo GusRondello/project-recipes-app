@@ -19,13 +19,14 @@ function Header({ pageTitle, componentName }) {
         <Link to="/profile">
           <img src={ profileIcon } data-testid="profile-top-btn" alt="Profile Icon" />
         </Link>
-        <h1 data-testid="page-title">{ pageTitle }</h1>
+        <h1 className="page-title" data-testid="page-title">{ pageTitle }</h1>
         {componentName === 'drinks'
       || componentName === 'foods'
       || componentName === 'explore-nationalities'
           ? (
             <button
               type="button"
+              className="search-btn"
               onClick={ updateButton }
             >
               <img data-testid="search-top-btn" src={ searchIcon } alt="Button Profile" />

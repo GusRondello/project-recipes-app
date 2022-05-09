@@ -1,5 +1,7 @@
+import 'bootstrap';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import '../styles/Login.css';
 
 function Login({ history }) {
   const [userInfo, setUserInfo] = useState({
@@ -43,35 +45,44 @@ function Login({ history }) {
   }, [userInfo]);
 
   return (
-    <>
-      <h1>Login</h1>
-      <form>
-        <input
-          name="email"
-          type="email"
-          data-testid="email-input"
-          onChange={ handleInputChange }
-          value={ userInfo.email }
-          placeholder="E-mail"
-        />
-        <input
-          name="password"
-          type="password"
-          data-testid="password-input"
-          onChange={ handleInputChange }
-          value={ userInfo.password }
-          placeholder="Password"
-        />
-        <button
-          type="button"
-          data-testid="login-submit-btn"
-          disabled={ isButtonDisabled }
-          onClick={ handleLoginButton }
-        >
-          Enter
-        </button>
-      </form>
-    </>
+    <div className="login_container">
+      <div className="login_wrapper">
+        <form>
+          <h1 className="h3 mb-3 fw-normal">Login</h1>
+          <div className="mb-3">
+            <input
+              className="form-control"
+              name="email"
+              type="email"
+              data-testid="email-input"
+              onChange={ handleInputChange }
+              value={ userInfo.email }
+              placeholder="E-mail"
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              className="form-control"
+              name="password"
+              type="password"
+              data-testid="password-input"
+              onChange={ handleInputChange }
+              value={ userInfo.password }
+              placeholder="Password"
+            />
+          </div>
+          <button
+            className="w-100 btn btn-lg"
+            type="button"
+            data-testid="login-submit-btn"
+            disabled={ isButtonDisabled }
+            onClick={ handleLoginButton }
+          >
+            Enter
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
 
