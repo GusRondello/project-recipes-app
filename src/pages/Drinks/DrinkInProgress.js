@@ -1,45 +1,16 @@
 import clipboardCopy from 'clipboard-copy';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeart from '../../images/whiteHeartIcon.svg';
+import {
+  saveRecipesDone, saveRecipesDrinkInProgress,
+} from '../../redux/action/index';
+import { getIngredientsAndMeasures } from '../../services/service';
 import '../../styles/InProgress.css';
-
-function getIngredientsAndMeasure(handleCheckbox, recipe, inputs) {
-  const twenty = 20;
-  const ingredientsAndMeasure = [];
-  for (let i = 1; i < twenty; i += 1) {
-    if (recipe[`strIngredient${i}`]) {
-      const checkbox = (
-        <label
-          className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
-          data-testid={ `${i - 1}-ingredient-step` }
-          htmlFor={ `${i}-checkbox` }
-          key={ i }
-        >
-          {recipe[`strIngredient${i}`]}
-          {' '}
-          -
-          {' '}
-          {recipe[`strMeasure${i}`]}
-          <input
-            name={ `${i}-checkbox` }
-            id={ `${i}-checkbox` }
-            defaultChecked={ !!inputs[`${i}-checkbox`] }
-            onChange={ handleCheckbox }
-            type="checkbox"
-          />
-        </label>
-
-      );
-      ingredientsAndMeasure.push(checkbox);
-    }
-  }
-  return ingredientsAndMeasure;
-}
 
 function handleFavButton(recipe, favorite, setFavorite) {
   setFavorite((prevState) => !prevState);
@@ -75,11 +46,12 @@ const handleShareButton = (idDrink) => {
 };
 
 function DrinkInProgress() {
+  const dispatch = useDispatch();
   const [drink, setDrink] = useState([]);
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
   const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
   const history = useHistory();
   const [favorite, setFavorite] = useState(false);
+  const [ingredientsAndMeasures, setIngredientsAndMeaures] = useState([]);
   const [inputs, setInputs] = useState({});
   const favoriteRecipes = useSelector((state) => state.Recipes.favoriteRecipes);
   const { id } = useParams();
@@ -118,34 +90,54 @@ function DrinkInProgress() {
   useEffect(
     () => {
       const getIngredientsList = () => {
-        const twenty = 20;
-        for (let i = 1; i < twenty; i += 1) {
-          if (drink[`strIngredient${i}`]) {
-            setInputs((prevState) => ({
-              ...prevState,
-              [`${i}-checkbox`]: false,
-            }));
-            setInputs((prevState) => ({
-              ...prevState,
-              ...inProgressRecipes.cocktails[idDrink],
-            }));
-          }
-        }
+        const ingredients = getIngredientsAndMeasures(drink);
+        setIngredientsAndMeaures(ingredients);
+        setInputs((prevState) => {
+          const myObject = {};
+          ingredients.forEach((_ingredient, index) => {
+            myObject[`${index}-checkbox`] = false;
+          });
+          return {
+            ...prevState,
+            ...myObject,
+          };
+        });
+        setInputs((prevState) => ({
+          ...prevState,
+          ...inProgressRecipes.cocktails[idDrink],
+        }));
       };
       getIngredientsList();
-    }, [drink, idDrink, inProgressRecipes],
+    }, [drink, idDrink],
   );
 
   useEffect(
     () => {
-      const newState = {
-        meals: inProgressRecipes.meals,
-        cocktails: {
-          [idDrink]: { ...inputs },
-        },
+      const saveLocalStorage = () => {
+        const idRecipeInProgess = JSON.parse(
+          localStorage.getItem('inProgressRecipes'),
+        );
+        if (idRecipeInProgess && idDrink) {
+          const newState = {
+            meals: inProgressRecipes.meals,
+            cocktails: { ...idRecipeInProgess.cocktails, [idDrink]: { ...inputs } },
+          };
+          localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
+          dispatch(saveRecipesDrinkInProgress(newState));
+        } else if (idDrink) {
+          const newState = {
+            meals: inProgressRecipes.meals,
+            cocktails: { [idDrink]: { ...inputs } },
+          };
+          localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
+          const newRecipesInProgress = JSON.parse(
+            localStorage.getItem('inProgressRecipes'),
+          );
+          dispatch(saveRecipesDrinkInProgress(newRecipesInProgress));
+        }
       };
-      window.localStorage.setItem('inProgressRecipes', JSON.stringify(newState));
-    }, [idDrink, inProgressRecipes.meals, inputs],
+      saveLocalStorage();
+    }, [idDrink, inputs],
   );
 
   const handleCheckbox = ({ target }) => {
@@ -157,22 +149,37 @@ function DrinkInProgress() {
     }));
   };
 
-  useEffect(
-    () => {
-      const checkButton = () => {
-        const inputValues = Object.values(inputs);
-        const checkedInputs = inputValues.every((input) => input === true);
-        if (checkedInputs) {
-          setButtonDisabled(false);
-        } else {
-          setButtonDisabled(true);
-        }
-      };
-      checkButton();
-    }, [inputs],
-  );
+  const isButtonDisabled = () => {
+    const inputValues = Object.values(inputs);
+    return inputValues.some((input) => input === false);
+  };
 
   const handleFinishRecipeBtn = () => {
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    const formatedDay = today.toDateString();
+
+    const newDoneRecipe = {
+      id: drink.idDrink,
+      type: 'drink',
+      nationality: '',
+      category: drink.strCategory,
+      alcoholicOrNot: drink.strAlcoholic,
+      name: drink.strDrink,
+      image: drink.strDrinkThumb,
+      doneDate: formatedDay,
+      tags: drink.strTags !== null ? drink.strTags.split(',') : null,
+    };
+
+    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (doneRecipes) {
+      const recipes = [...doneRecipes, newDoneRecipe];
+      localStorage.setItem('doneRecipes', JSON.stringify(recipes));
+      dispatch(saveRecipesDone(recipes));
+    } else {
+      localStorage.setItem('doneRecipes', JSON.stringify([newDoneRecipe]));
+      dispatch(saveRecipesDone([newDoneRecipe]));
+    }
     history.push('/done-recipes');
   };
 
@@ -200,23 +207,39 @@ function DrinkInProgress() {
         onClick={ () => handleFavButton(drink, favorite, setFavorite) }
         src={ favorite ? blackHeart : whiteHeart }
       >
-        {
-          favorite
-            ? <img src={ blackHeart } alt="black heart" />
-            : <img src={ whiteHeart } alt="white heart" />
-        }
+        {favorite
+          ? <img src={ blackHeart } alt="black heart" />
+          : <img src={ whiteHeart } alt="white heart" />}
       </button>
       <p data-testid="recipe-category">{ strAlcoholic }</p>
-      <div>{drink && getIngredientsAndMeasure(handleCheckbox, drink, inputs)}</div>
+      <div>
+        {drink && ingredientsAndMeasures.map((instruction, i) => (
+          <label
+            className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
+            data-testid={ `${i - 1}-ingredient-step` }
+            htmlFor={ `${i}-checkbox` }
+            key={ i }
+          >
+            {instruction.ingredient}
+            {instruction.measure}
+            <input
+              name={ `${i}-checkbox` }
+              id={ `${i}-checkbox` }
+              defaultChecked={ !!inputs[`${i}-checkbox`] }
+              onChange={ handleCheckbox }
+              type="checkbox"
+            />
+          </label>
+        ))}
+      </div>
       <p data-testid="instructions">{ strInstructions }</p>
       <button
-        disabled={ isButtonDisabled }
+        disabled={ isButtonDisabled() }
         type="button"
         data-testid="finish-recipe-btn"
         onClick={ handleFinishRecipeBtn }
       >
         Finish Recipe
-
       </button>
     </section>
   );
