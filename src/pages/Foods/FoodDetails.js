@@ -123,71 +123,73 @@ function FoodDetails({ history }) {
   };
 
   return (
-    <section className="page-food">
-      <img
-        className="meal_image"
-        src={ strMealThumb }
-        alt={ strMeal }
-        data-testid="recipe-photo"
-      />
-      <div className="header-conteiner">
-        <div>
-          <h2 data-testid="recipe-title">{ strMeal }</h2>
-          <p data-testid="recipe-category">{ strCategory }</p>
+    <div className="page-food">
+      <section className="page-food">
+        <img
+          className="meal_image"
+          src={ strMealThumb }
+          alt={ strMeal }
+          data-testid="recipe-photo"
+        />
+        <div className="header-conteiner">
+          <div>
+            <h2 data-testid="recipe-title">{ strMeal }</h2>
+            <p data-testid="recipe-category">{ strCategory }</p>
+          </div>
+          <div>
+            <button
+              type="button"
+              className="share-btn"
+              data-testid="share-btn"
+              onClick={ handleShareButton }
+            >
+              <img src={ shareIcon } alt="share icon" className="share-icon" />
+            </button>
+            <button
+              type="button"
+              className="favorite-btn"
+              data-testid="favorite-btn"
+              onClick={ handleFavButton }
+              src={ favorite ? blackHeart : whiteHeart }
+            >
+              {
+                favorite
+                  ? <img src={ blackHeart } alt="black heart" />
+                  : <img src={ whiteHeart } alt="white heart" />
+              }
+            </button>
+          </div>
         </div>
-        <div>
-          <button
-            type="button"
-            className="share-btn"
-            data-testid="share-btn"
-            onClick={ handleShareButton }
-          >
-            <img src={ shareIcon } alt="share icon" className="share-icon" />
-          </button>
-          <button
-            type="button"
-            className="favorite-btn"
-            data-testid="favorite-btn"
-            onClick={ handleFavButton }
-            src={ favorite ? blackHeart : whiteHeart }
-          >
-            {
-              favorite
-                ? <img src={ blackHeart } alt="black heart" />
-                : <img src={ whiteHeart } alt="white heart" />
-            }
-          </button>
-        </div>
-      </div>
 
-      <ul>{getIngredientsAndMeasure()}</ul>
-      <p className="instructions" data-testid="instructions">{ strInstructions }</p>
-      <iframe
-        title={ strMeal }
-        width="341"
-        height="160"
-        data-testid="video"
-        src={ String(strYoutube).replace('watch?v=', 'embed/') }
-      />
-      <RecomendationCarousel recomendations={ recomendation } />
-      {
-        !isRecipeDone && (
-          <button
-            className="start_recipe_btn"
-            type="button"
-            data-testid="start-recipe-btn"
-            onClick={ handleStartRecipe }
-          >
-            {
-              inProgressIds
-                .some((inProgressId) => inProgressId === idMeal)
-                ? 'Continue Recipe'
-                : 'Start Recipe'
-            }
+        <ul>{getIngredientsAndMeasure()}</ul>
+        <p className="instructions" data-testid="instructions">{ strInstructions }</p>
+        <iframe
+          title={ strMeal }
+          width="341"
+          height="160"
+          data-testid="video"
+          src={ String(strYoutube).replace('watch?v=', 'embed/') }
+        />
+        <RecomendationCarousel recomendations={ recomendation } />
+        {
+          !isRecipeDone && (
+            <button
+              className="start_recipe_btn"
+              type="button"
+              data-testid="start-recipe-btn"
+              onClick={ handleStartRecipe }
+            >
+              {
+                inProgressIds
+                  .some((inProgressId) => inProgressId === idMeal)
+                  ? 'Continue Recipe'
+                  : 'Start Recipe'
+              }
 
-          </button>)
-      }
-    </section>
+            </button>)
+        }
+      </section>
+    </div>
   );
 }
 

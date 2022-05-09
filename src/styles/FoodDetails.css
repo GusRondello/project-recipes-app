@@ -1,4 +1,6 @@
-.page-food-details {
+.page-food {
+  background-color: var(--main-color);
+  color: var(--secondary-color);
   width: 100vw;
 }
 
