@@ -18,7 +18,7 @@
 
 .explore-ingredients-container {
   display: flex;
-  flex-direction: row wrap;
+  flex-flow: row wrap;
   margin: 10px;
   margin-bottom: 50px;
 }
