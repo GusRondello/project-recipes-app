@@ -7,7 +7,7 @@ import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeart from '../../images/whiteHeartIcon.svg';
 import {
-  saveRecipesDone, saveRecipesDrinkInProgress
+  saveRecipesDone, saveRecipesDrinkInProgress,
 } from '../../redux/action/index';
 import { getIngredientsAndMeasures } from '../../services/service';
 import '../../styles/InProgress.css';
@@ -89,23 +89,19 @@ function DrinkInProgress() {
 
   useEffect(
     () => {
-      console.log(`SETANDO INPUTS: ${JSON.stringify(drink)}`);
       const getIngredientsList = () => {
         const ingredients = getIngredientsAndMeasures(drink);
         setIngredientsAndMeaures(ingredients);
-        if (ingredients.length > 0) {
-          console.log('ENTREI PRA SETAR INPUTS');
-          setInputs((prevState) => {
-            const myObject = {};
-            ingredients.forEach((_ingredient, index) => {
-              myObject[`${index}-checkbox`] = false;
-            });
-            return {
-              ...prevState,
-              ...myObject,
-            };
+        setInputs((prevState) => {
+          const myObject = {};
+          ingredients.forEach((_ingredient, index) => {
+            myObject[`${index}-checkbox`] = false;
           });
-        }
+          return {
+            ...prevState,
+            ...myObject,
+          };
+        });
         setInputs((prevState) => ({
           ...prevState,
           ...inProgressRecipes.cocktails[idDrink],
@@ -155,12 +151,7 @@ function DrinkInProgress() {
 
   const isButtonDisabled = () => {
     const inputValues = Object.values(inputs);
-    console.log(inputs);
-    const checkedInputs = inputValues.every((input) => input === true);
-    if (checkedInputs) {
-      return false;
-    }
-    return true;
+    return inputValues.some((input) => input === false);
   };
 
   const handleFinishRecipeBtn = () => {
@@ -182,10 +173,7 @@ function DrinkInProgress() {
 
     const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
     if (doneRecipes) {
-      const recipes = [
-        ...doneRecipes,
-        newDoneRecipe,
-      ];
+      const recipes = [...doneRecipes, newDoneRecipe];
       localStorage.setItem('doneRecipes', JSON.stringify(recipes));
       dispatch(saveRecipesDone(recipes));
     } else {
@@ -197,7 +185,6 @@ function DrinkInProgress() {
 
   return (
     <section>
-      {console.log('RENDERIZANDO')}
       <img
         className="meal_image"
         src={ strDrinkThumb }
@@ -226,7 +213,7 @@ function DrinkInProgress() {
       </button>
       <p data-testid="recipe-category">{ strAlcoholic }</p>
       <div>
-        {drink && getIngredientsAndMeasures(drink).map((instruction, i) => (
+        {drink && ingredientsAndMeasures.map((instruction, i) => (
           <label
             className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
             data-testid={ `${i - 1}-ingredient-step` }
