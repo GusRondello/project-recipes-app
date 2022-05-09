@@ -16,9 +16,9 @@
 
 .explore-btn {
   background-color: rgb(217, 193, 171);
-  color: #0b0b0d;
   border: none;
   border-radius: 5px;
+  color: #0b0b0d;
   font-size: 22px;
   margin-bottom: 14px;
 }
@@ -28,11 +28,9 @@
   display: flex;
   flex-flow: row wrap;
   height: 100vh;
-  margin: 0;
-  padding-top: 12px;
-  padding-bottom: 24px;
-  padding-left: 8px;
-  padding-right: 8px;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  padding: 12px 12px 24px;
 }
 
 .ingredient-btn {
@@ -44,18 +42,20 @@
 }
 
 .ingredient-name {
+  color: rgb(217, 193, 171);
   font-size: 18px;
   width: 50px;
-  color: rgb(217, 193, 171);
 }
 
 .explore-by-nationality-dropdown {
+  align-self: center;
+  background-color: #0b0b0d;
+  border: solid 1px rgb(217, 193, 171);
+  border-radius: 5px;
+  color: rgb(217, 193, 171);
   display: flex;
   justify-content: center;
-  background-color: #0b0b0d;
-  color: rgb(217, 193, 171);
-  align-self: center;
-  width: 150px;
   margin: 15px;
+  width: 150px;
 }
 
