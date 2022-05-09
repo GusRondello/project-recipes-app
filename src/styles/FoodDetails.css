@@ -1,35 +1,42 @@
 .page-food {
   background-color: var(--main-color);
   color: var(--secondary-color);
-  width: 100vw;
+  max-height: 100%;
 }
 
 .header-conteiner {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-left: 8px;
+  margin-top: 20px;
 }
 
 .instructions {
+  margin-bottom: 20px;
+  margin-left: 8px;
+  margin-top: 20px;
+  text-align: justify;
   width: 336px;
 }
 
 .start_recipe_btn {
-  background-color: red;
+  background-color: var(--acent);
   border: none;
   border-radius: 5px;
   bottom: 0;
-  color: white;
+  color: var(--main-color);
+  margin-left: 120px;
   padding: 5px;
   position: fixed;
 }
 
 .start_recipe_btn:hover {
-  background-color: white;
-  border: solid 1.5px red;
+  background-color: var(--secondary-color);
+  border: solid 1.5px var(--main-color);
   border-radius: 5px;
   bottom: 0;
-  color: red;
+  color: var(--main-color);
   padding: 5px;
   position: fixed;
 }
@@ -40,6 +47,11 @@
 }
 
 .favorite-btn, .share-btn {
-  background-color: transparent;
-  border: none;
+  background-color: var(--acent);
+  border-radius: 4px;
+}
+
+.ingredients {
+  margin-left: 8px;
+  text-align: justify;
 }
