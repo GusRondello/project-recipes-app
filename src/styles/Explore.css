@@ -1,26 +1,38 @@
+.explore-container {
+  background-color: #0b0b0d;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+
 .button-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin: 8px;
-  padding-top: 70px;
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-top: 36%;
 }
 
 .explore-btn {
-  background-color: black;
+  background-color: rgb(217, 193, 171);
+  color: #0b0b0d;
   border: none;
-  box-shadow: 2px 2px 2px #bebebe;
-  color: white;
-  font-size: 20px;
-  margin-bottom: 8px;
-  padding: 6px;
+  border-radius: 5px;
+  font-size: 22px;
+  margin-bottom: 14px;
 }
 
 .explore-ingredients-container {
+  background-color: #0b0b0d;
   display: flex;
   flex-flow: row wrap;
-  margin: 10px;
-  margin-bottom: 50px;
+  height: 100vh;
+  margin: 0;
+  padding-top: 12px;
+  padding-bottom: 24px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .ingredient-btn {
@@ -34,4 +46,16 @@
 .ingredient-name {
   font-size: 18px;
   width: 50px;
+  color: rgb(217, 193, 171);
 }
+
+.explore-by-nationality-dropdown {
+  display: flex;
+  justify-content: center;
+  background-color: #0b0b0d;
+  color: rgb(217, 193, 171);
+  align-self: center;
+  width: 150px;
+  margin: 15px;
+}
+
