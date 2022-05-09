@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
-import SearchBar from './SearchBar';
 import '../styles/Header.css';
+import SearchBar from './SearchBar';
 
 function Header({ pageTitle, componentName }) {
   const [searchInput, changeSearchInput] = useState(false);

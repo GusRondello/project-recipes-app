@@ -68,10 +68,18 @@ function DrinkDetails({ history }) {
 
   useEffect(
     () => {
-      const checkIfIsDone = doneRecipes.some((recipe) => recipe.id === idDrink);
-      setRecipeDone(checkIfIsDone);
+      if (doneRecipes) {
+        const checkIfIsDone = doneRecipes.some((recipe) => recipe.id === idDrink);
+        setRecipeDone(checkIfIsDone);
+      }
     }, [idDrink, doneRecipes],
   );
+  const selectButton = () => {
+    if (inProgressIds.some((inProgressId) => inProgressId === idDrink)) {
+      return 'Continue Recipe';
+    }
+    return 'Start Recipe';
+  };
 
   const getIngredientsAndMeasure = () => {
     const twenty = 20;
@@ -163,13 +171,7 @@ function DrinkDetails({ history }) {
             data-testid="start-recipe-btn"
             onClick={ handleStartRecipe }
           >
-            {
-              inProgressIds
-                .some((inProgressId) => inProgressId === idDrink)
-                ? 'Continue Recipe'
-                : 'Start Recipe'
-            }
-
+            { selectButton() }
           </button>)
       }
     </section>
