@@ -77,7 +77,7 @@ function DrinkDetails({ history }) {
       return 'Continue Recipe';
     }
     return 'Start Recipe';
-  }
+  };
 
   const getIngredientsAndMeasure = () => {
     const twenty = 20;
