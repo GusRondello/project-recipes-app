@@ -13,23 +13,23 @@
 }
 
 .start_recipe_btn {
-  position: fixed;
-  padding: 5px;
   background-color: red;
-  border-radius: 5px;
   border: none;
-  color: white;
+  border-radius: 5px;
   bottom: 0;
+  color: white;
+  padding: 5px;
+  position: fixed;
 }
 
 .start_recipe_btn:hover {
-  position: fixed;
-  padding: 5px;
   background-color: white;
-  border-radius: 5px;
   border: solid 1.5px red;
-  color: red;
+  border-radius: 5px;
   bottom: 0;
+  color: red;
+  padding: 5px;
+  position: fixed;
 }
 
 .meal_image {
