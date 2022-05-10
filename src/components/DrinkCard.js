@@ -4,6 +4,8 @@ import { Link, Redirect } from 'react-router-dom';
 import '../styles/DrinkCard.css';
 
 function DrinkCard({ category, recipeDrinks }) {
+  const maxLetter = 15;
+
   return (
     <div className="page-recipe-drink">
       {recipeDrinks.length === 1 && (category === '' || category === undefined)
@@ -11,7 +13,10 @@ function DrinkCard({ category, recipeDrinks }) {
         : null}
       { recipeDrinks.map((recipe, index) => (
         <Link to={ `/drinks/${recipe.idDrink}` } key={ recipe.idDrink }>
-          <div data-testid={ `${index}-recipe-card` }>
+          <div
+            className="drink-card-container"
+            data-testid={ `${index}-recipe-card` }
+          >
             <img
               className="recipe-drink-image"
               src={ recipe.strDrinkThumb }
@@ -19,10 +24,12 @@ function DrinkCard({ category, recipeDrinks }) {
               data-testid={ `${index}-card-img` }
             />
             <h1
-              className="food-card-name"
+              className="drink-card-name"
               data-testid={ `${index}-card-name` }
             >
-              { recipe.strDrink }
+              { recipe.strDrink.length > maxLetter
+                ? `${recipe.strDrink.slice(0, maxLetter - 1)}`
+                : recipe.strDrink }
             </h1>
           </div>
         </Link>

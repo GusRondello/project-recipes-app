@@ -1,8 +1,18 @@
+.foods {
+  align-items: center;
+  background-color: #0b0b0d;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+
 .page-recipe-food {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-bottom: 450px;
   margin-left: 22px;
   margin-right: 22px;
 }
@@ -11,6 +21,8 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  height: 160px;
+  width: 86px;
 }
 
 .recipe-image {
@@ -22,6 +34,6 @@
 
 .food-card-name {
   color: rgb(217, 193, 171);
-  font-size: 18px;
+  font-size: 16px;
   margin-top: 5px;
 }

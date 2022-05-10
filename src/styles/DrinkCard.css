@@ -1,15 +1,39 @@
+.drinks, .foods {
+  align-items: center;
+  background-color: #0b0b0d;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+
 .page-recipe-drink {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
+  margin-bottom: 450px;
+  margin-left: 22px;
+  margin-right: 22px;
+}
+
+.drink-card-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 160px;
+  width: 86px;
 }
 
 .recipe-drink-image {
+  border-radius: 5px;
   display: flex;
   justify-content: center;
   width: 86px;
 }
 
-.food-card-name {
+.drink-card-name {
+  color: rgb(217, 193, 171);
   font-size: 16px;
+  margin-top: 5px;
 }
