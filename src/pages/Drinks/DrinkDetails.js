@@ -1,3 +1,4 @@
+import 'bootstrap';
 import clipboardCopy from 'clipboard-copy';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -8,6 +9,7 @@ import RecomendationCarousel from '../../components/RecomendationCarousel';
 import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeart from '../../images/whiteHeartIcon.svg';
+import '../../styles/FoodDetails.css';
 
 function DrinkDetails({ history }) {
   const [drink, setDrink] = useState([]);
@@ -130,39 +132,49 @@ function DrinkDetails({ history }) {
   };
 
   return (
-    <section>
+    <section className="page-food">
       <img
-        className="meal_image"
+        className="img-fluid"
         src={ strDrinkThumb }
         alt={ strDrink }
         data-testid="recipe-photo"
       />
-      <h2 data-testid="recipe-title">{ strDrink }</h2>
-      <button
-        type="button"
-        data-testid="share-btn"
-        onClick={ handleShareButton }
+      <div className="header-conteiner">
+        <div>
+          <h2 data-testid="recipe-title">{ strDrink }</h2>
+          <p data-testid="recipe-category">{ strAlcoholic }</p>
+        </div>
+        <div>
+          <button
+            type="button"
+            className="share-btn"
+            data-testid="share-btn"
+            onClick={ handleShareButton }
 
-      >
-        <img src={ shareIcon } alt="share icon" />
+          >
+            <img src={ shareIcon } alt="share icon" />
 
-      </button>
-      <button
-        type="button"
-        data-testid="favorite-btn"
-        onClick={ handleFavButton }
-        src={ favorite ? blackHeart : whiteHeart }
-      >
-        {
-          favorite
-            ? <img src={ blackHeart } alt="black heart" />
-            : <img src={ whiteHeart } alt="white heart" />
-        }
-      </button>
-      <p data-testid="recipe-category">{ strAlcoholic }</p>
-      <ul>{ getIngredientsAndMeasure() }</ul>
-      <p data-testid="instructions">{ strInstructions }</p>
-      <RecomendationCarousel recomendations={ recomendation } />
+          </button>
+          <button
+            type="button"
+            className="favorite-btn"
+            data-testid="favorite-btn"
+            onClick={ handleFavButton }
+            src={ favorite ? blackHeart : whiteHeart }
+          >
+            {
+              favorite
+                ? <img src={ blackHeart } alt="black heart" />
+                : <img src={ whiteHeart } alt="white heart" />
+            }
+          </button>
+        </div>
+      </div>
+      <ul className="ingredients">{ getIngredientsAndMeasure() }</ul>
+      <p className="instructions" data-testid="instructions">{ strInstructions }</p>
+      <div className="carousel">
+        <RecomendationCarousel recomendations={ recomendation } />
+      </div>
       {
         !isRecipeDone && (
           <button

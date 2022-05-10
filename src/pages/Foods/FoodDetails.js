@@ -170,7 +170,9 @@ function FoodDetails({ history }) {
         data-testid="video"
         src={ String(strYoutube).replace('watch?v=', 'embed/') }
       />
-      <RecomendationCarousel recomendations={ recomendation } />
+      <div className="carousel">
+        <RecomendationCarousel recomendations={ recomendation } />
+      </div>
       {
         !isRecipeDone && (
           <button
