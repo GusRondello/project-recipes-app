@@ -155,9 +155,8 @@ function DrinkInProgress() {
   };
 
   const handleFinishRecipeBtn = () => {
-    const timeElapsed = Date.now();
-    const today = new Date(timeElapsed);
-    const formatedDay = today.toDateString();
+    const data = new Date();
+    const formatedDay = data.toLocaleDateString();
 
     const newDoneRecipe = {
       id: drink.idDrink,
