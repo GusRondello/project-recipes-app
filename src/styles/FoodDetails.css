@@ -38,6 +38,6 @@
 }
 
 .favorite-btn, .share-btn {
-  background-color: transparent;
-  border: none;
+  background-color: var(--acent);
+  border-radius: 4px;
 }
