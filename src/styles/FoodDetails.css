@@ -59,3 +59,13 @@
 .carousel {
   margin-top: 24px;
 }
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  margin-left: 8px;
+}
+
+html {
+  background-color: var(--main-color);
+}

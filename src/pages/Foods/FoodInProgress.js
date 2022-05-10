@@ -1,13 +1,15 @@
+import 'bootstrap';
 import clipboardCopy from 'clipboard-copy';
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeart from '../../images/whiteHeartIcon.svg';
-import { saveRecipesFoodInProgress, saveRecipesDone } from '../../redux/action/index';
+import { saveRecipesDone, saveRecipesFoodInProgress } from '../../redux/action/index';
 import { getIngredientsAndMeasures } from '../../services/service';
+import '../../styles/FoodDetails.css';
 import '../../styles/InProgress.css';
 
 function handleFavButton(recipe, favorite, setFavorite) {
@@ -43,7 +45,7 @@ const handleShareButton = (idMeal) => {
   toast.success('Link copied!');
 };
 
-function FoodInProgress() {
+export default function FoodInProgress() {
   const dispatch = useDispatch();
   const [recipe, setRecipe] = useState([]);
   const [favorite, setFavorite] = useState(false);
@@ -141,20 +143,16 @@ function FoodInProgress() {
 
   const handleCheckbox = ({ target }) => {
     const { name, checked } = target;
-
     setInputs((prevState) => ({ ...prevState, [name]: checked }));
   };
-
   const isButtonDisabled = () => {
     const inputValues = Object.values(inputs);
     return inputValues.some((input) => input === false);
   };
-
   const handleFinishRecipeBtn = () => {
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
     const formatedDay = today.toDateString();
-
     const newDoneRecipe = {
       id: recipe.idMeal,
       type: 'food',
@@ -180,38 +178,44 @@ function FoodInProgress() {
     }
     history.push('/done-recipes');
   };
-
   return (
-    <section>
+    <section className="page-food">
       <img
-        className="meal_image"
+        className="img-fluid"
         src={ strMealThumb }
         alt={ strMeal }
         data-testid="recipe-photo"
       />
-      <h2 data-testid="recipe-title">{ strMeal }</h2>
-      <button
-        type="button"
-        data-testid="share-btn"
-        onClick={ () => handleShareButton(idMeal) }
-      >
-        <img src={ shareIcon } alt="share icon" />
-
-      </button>
-      <button
-        type="button"
-        data-testid="favorite-btn"
-        onClick={ () => handleFavButton(recipe, favorite, setFavorite) }
-        src={ favorite ? blackHeart : whiteHeart }
-      >
-        {
-          favorite
-            ? <img src={ blackHeart } alt="black heart" />
-            : <img src={ whiteHeart } alt="white heart" />
-        }
-      </button>
-      <p data-testid="recipe-category">{ strCategory }</p>
-      <div>
+      <div className="header-conteiner">
+        <div>
+          <h2 data-testid="recipe-title">{ strMeal }</h2>
+          <p data-testid="recipe-category">{ strCategory }</p>
+        </div>
+        <div>
+          <button
+            className="share-btn"
+            type="button"
+            data-testid="share-btn"
+            onClick={ () => handleShareButton(idMeal) }
+          >
+            <img src={ shareIcon } alt="share icon" />
+          </button>
+          <button
+            type="button"
+            className="favorite-btn"
+            data-testid="favorite-btn"
+            onClick={ () => handleFavButton(recipe, favorite, setFavorite) }
+            src={ favorite ? blackHeart : whiteHeart }
+          >
+            {
+              favorite
+                ? <img src={ blackHeart } alt="black heart" />
+                : <img src={ whiteHeart } alt="white heart" />
+            }
+          </button>
+        </div>
+      </div>
+      <div className="inputs">
         {recipe && ingredientsAndMeasures.map((instruction, i) => (
           <label
             className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
@@ -231,18 +235,16 @@ function FoodInProgress() {
           </label>
         ))}
       </div>
-      <p data-testid="instructions">{ strInstructions }</p>
+      <p className="instructions" data-testid="instructions">{ strInstructions }</p>
       <button
+        className="start_recipe_btn"
         disabled={ isButtonDisabled() }
         onClick={ handleFinishRecipeBtn }
         type="button"
         data-testid="finish-recipe-btn"
       >
         Finish Recipe
-
       </button>
     </section>
   );
 }
-
-export default FoodInProgress;
