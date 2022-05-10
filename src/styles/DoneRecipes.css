@@ -21,13 +21,13 @@
 
 .recipe {
   align-items: center;
+  background-color: #0b0b0d;
+  border: none;
+  border-radius: 5px;
   display: flex;
   flex-direction: row;
   margin: 10px;
-  background-color: #0b0b0d;
   padding: 5px;
-  border: none;
-  border-radius: 5px;
 }
 
 .recipe-infos {
