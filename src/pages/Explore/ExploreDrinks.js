@@ -27,25 +27,27 @@ function ExploreDrinks() {
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
-      <main className="button-container">
-        <button
-          type="button"
-          className="explore-btn"
-          data-testid="explore-by-ingredient"
-          name="byIngredient"
-          onClick={ handleClick }
-        >
-          By Ingredient
-        </button>
-        <button
-          type="button"
-          className="explore-btn"
-          name="surprise"
-          data-testid="explore-surprise"
-          onClick={ handleClick }
-        >
-          Surprise me!
-        </button>
+      <main className="explore-container">
+        <div className="button-container">
+          <button
+            type="button"
+            className="w-100 btn explore-btn"
+            data-testid="explore-by-ingredient"
+            name="byIngredient"
+            onClick={ handleClick }
+          >
+            By Ingredient
+          </button>
+          <button
+            type="button"
+            className="w-100 btn explore-btn"
+            name="surprise"
+            data-testid="explore-surprise"
+            onClick={ handleClick }
+          >
+            Surprise me!
+          </button>
+        </div>
       </main>
       <Footer />
     </div>

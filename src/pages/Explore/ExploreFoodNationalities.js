@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FoodCard from '../../components/FoodCard';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
+import '../../styles/Explore.css';
 
 const DOZE = 12;
 
@@ -51,19 +52,25 @@ function ExploreFoodNationalities() {
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
-      <select data-testid="explore-by-nationality-dropdown" onChange={ handleChange }>
-        <option data-testid="All-option">All</option>
-        {nationalities
-          .map((nationality) => (
-            <option
-              key={ nationality }
-              value={ nationality }
-              data-testid={ `${nationality}-option` }
-            >
-              {nationality}
-            </option>))}
-      </select>
-      <FoodCard category="" recipeFoods={ initialRecipes } />
+      <main className="explore-container">
+        <select
+          className="explore-by-nationality-dropdown"
+          data-testid="explore-by-nationality-dropdown"
+          onChange={ handleChange }
+        >
+          <option data-testid="All-option">All</option>
+          {nationalities
+            .map((nationality) => (
+              <option
+                key={ nationality }
+                value={ nationality }
+                data-testid={ `${nationality}-option` }
+              >
+                {nationality}
+              </option>))}
+        </select>
+        <FoodCard category="" recipeFoods={ initialRecipes } />
+      </main>
       <Footer />
     </div>
   );
