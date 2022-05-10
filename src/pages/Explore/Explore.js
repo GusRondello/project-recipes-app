@@ -20,23 +20,25 @@ function Explore() {
   return (
     <div>
       <Header pageTitle={ pageTitle } componentName={ componentName } />
-      <main className="button-container">
-        <button
-          type="button"
-          className="explore-btn"
-          data-testid="explore-foods"
-          onClick={ handleClickFoodsButton }
-        >
-          Explore Foods
-        </button>
-        <button
-          type="button"
-          className="explore-btn"
-          data-testid="explore-drinks"
-          onClick={ handleClickDrinksButton }
-        >
-          Explore Drinks
-        </button>
+      <main className="explore-container">
+        <div className="button-container">
+          <button
+            type="button"
+            className="w-100 btn explore-btn"
+            data-testid="explore-foods"
+            onClick={ handleClickFoodsButton }
+          >
+            Explore Foods
+          </button>
+          <button
+            type="button"
+            className="w-100 btn explore-btn"
+            data-testid="explore-drinks"
+            onClick={ handleClickDrinksButton }
+          >
+            Explore Drinks
+          </button>
+        </div>
       </main>
       <Footer />
     </div>
