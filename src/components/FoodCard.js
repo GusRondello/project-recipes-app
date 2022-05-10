@@ -4,8 +4,6 @@ import { Link, Redirect } from 'react-router-dom';
 import '../styles/FoodCard.css';
 
 function FoodCard({ category, recipeFoods }) {
-  const maxLetter = 15;
-
   return (
     <div className="page-recipe-food">
       {recipeFoods.length === 1 && (category === '' || category === undefined)
@@ -27,9 +25,7 @@ function FoodCard({ category, recipeFoods }) {
               data-testid={ `${index}-card-name` }
               className="food-card-name"
             >
-              { recipe.strMeal.length > maxLetter
-                ? `${recipe.strMeal.slice(0, maxLetter - 1)}`
-                : recipe.strMeal }
+              { recipe.strMeal }
             </h1>
           </div>
         </Link>
