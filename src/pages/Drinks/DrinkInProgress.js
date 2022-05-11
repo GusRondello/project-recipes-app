@@ -1,3 +1,4 @@
+import 'bootstrap';
 import clipboardCopy from 'clipboard-copy';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,10 +7,9 @@ import { toast } from 'react-toastify';
 import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeart from '../../images/whiteHeartIcon.svg';
-import {
-  saveRecipesDone, saveRecipesDrinkInProgress,
-} from '../../redux/action/index';
+import { saveRecipesDone, saveRecipesDrinkInProgress } from '../../redux/action/index';
 import { getIngredientsAndMeasures } from '../../services/service';
+import '../../styles/FoodDetails.css';
 import '../../styles/InProgress.css';
 
 function handleFavButton(recipe, favorite, setFavorite) {
@@ -33,7 +33,6 @@ function handleFavButton(recipe, favorite, setFavorite) {
         name: strDrink,
         image: strDrinkThumb,
       }];
-
     window.localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteList));
   } else {
     window.localStorage.setItem('favoriteRecipes', JSON.stringify([{}]));
@@ -45,7 +44,7 @@ const handleShareButton = (idDrink) => {
   toast.success('Link copied!');
 };
 
-function DrinkInProgress() {
+export default function DrinkInProgress() {
   const dispatch = useDispatch();
   const [drink, setDrink] = useState([]);
   const inProgressRecipes = useSelector((state) => state.Recipes.inProgressRecipes);
@@ -157,7 +156,6 @@ function DrinkInProgress() {
   const handleFinishRecipeBtn = () => {
     const data = new Date();
     const formatedDay = data.toLocaleDateString();
-
     const newDoneRecipe = {
       id: drink.idDrink,
       type: 'drink',
@@ -169,7 +167,6 @@ function DrinkInProgress() {
       doneDate: formatedDay,
       tags: drink.strTags !== null ? drink.strTags.split(',') : null,
     };
-
     const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
     if (doneRecipes) {
       const recipes = [...doneRecipes, newDoneRecipe];
@@ -183,35 +180,41 @@ function DrinkInProgress() {
   };
 
   return (
-    <section>
+    <section className="page-food">
       <img
-        className="meal_image"
+        className="img-fluid"
         src={ strDrinkThumb }
         alt={ strDrink }
         data-testid="recipe-photo"
       />
-      <h2 data-testid="recipe-title">{ strDrink }</h2>
-      <button
-        type="button"
-        data-testid="share-btn"
-        onClick={ () => handleShareButton(idDrink) }
-
-      >
-        <img src={ shareIcon } alt="share icon" />
-
-      </button>
-      <button
-        type="button"
-        data-testid="favorite-btn"
-        onClick={ () => handleFavButton(drink, favorite, setFavorite) }
-        src={ favorite ? blackHeart : whiteHeart }
-      >
-        {favorite
-          ? <img src={ blackHeart } alt="black heart" />
-          : <img src={ whiteHeart } alt="white heart" />}
-      </button>
-      <p data-testid="recipe-category">{ strAlcoholic }</p>
-      <div>
+      <div className="header-conteiner">
+        <div>
+          <h2 data-testid="recipe-title">{ strDrink }</h2>
+          <p data-testid="recipe-category">{ strAlcoholic }</p>
+        </div>
+        <div>
+          <button
+            type="button"
+            className="share-btn"
+            data-testid="share-btn"
+            onClick={ () => handleShareButton(idDrink) }
+          >
+            <img src={ shareIcon } alt="share icon" />
+          </button>
+          <button
+            type="button"
+            className="favorite-btn"
+            data-testid="favorite-btn"
+            onClick={ () => handleFavButton(drink, favorite, setFavorite) }
+            src={ favorite ? blackHeart : whiteHeart }
+          >
+            {favorite
+              ? <img src={ blackHeart } alt="black heart" />
+              : <img src={ whiteHeart } alt="white heart" />}
+          </button>
+        </div>
+      </div>
+      <div className="inputs">
         {drink && ingredientsAndMeasures.map((instruction, i) => (
           <label
             className={ inputs[`${i}-checkbox`] ? 'checked_input' : undefined }
@@ -231,8 +234,9 @@ function DrinkInProgress() {
           </label>
         ))}
       </div>
-      <p data-testid="instructions">{ strInstructions }</p>
+      <p className="instructions" data-testid="instructions">{ strInstructions }</p>
       <button
+        className="start_recipe_btn"
         disabled={ isButtonDisabled() }
         type="button"
         data-testid="finish-recipe-btn"
@@ -243,5 +247,3 @@ function DrinkInProgress() {
     </section>
   );
 }
-
-export default DrinkInProgress;

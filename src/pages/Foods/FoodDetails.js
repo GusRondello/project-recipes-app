@@ -1,3 +1,4 @@
+import 'bootstrap';
 import clipboardCopy from 'clipboard-copy';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -123,9 +124,9 @@ function FoodDetails({ history }) {
   };
 
   return (
-    <section className="page-food">
+    <div className="page-food">
       <img
-        className="meal_image"
+        className="img-fluid"
         src={ strMealThumb }
         alt={ strMeal }
         data-testid="recipe-photo"
@@ -160,16 +161,18 @@ function FoodDetails({ history }) {
         </div>
       </div>
 
-      <ul>{getIngredientsAndMeasure()}</ul>
+      <ul className="ingredients">{getIngredientsAndMeasure()}</ul>
       <p className="instructions" data-testid="instructions">{ strInstructions }</p>
       <iframe
         title={ strMeal }
-        width="341"
+        width="360"
         height="160"
         data-testid="video"
         src={ String(strYoutube).replace('watch?v=', 'embed/') }
       />
-      <RecomendationCarousel recomendations={ recomendation } />
+      <div className="carousel">
+        <RecomendationCarousel recomendations={ recomendation } />
+      </div>
       {
         !isRecipeDone && (
           <button
@@ -187,7 +190,8 @@ function FoodDetails({ history }) {
 
           </button>)
       }
-    </section>
+
+    </div>
   );
 }
 
