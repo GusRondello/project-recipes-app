@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import Header from '../components/Header';
 import blackHeart from '../images/blackHeartIcon.svg';
 import shareIcon from '../images/shareIcon.svg';
+import '../styles/DoneRecipes.css';
 
 function FavoriteRecipes() {
   const componentName = 'favorite-recipes';
@@ -41,11 +42,12 @@ function FavoriteRecipes() {
   };
 
   return (
-    <div>
+    <div className="page-done-recipes">
       <Header pageTitle={ pageTitle } componentName={ componentName } />
       <nav>
         <button
           type="button"
+          className="filter-btn"
           data-testid="filter-by-all-btn"
           onClick={ handleAllFilter }
         >
@@ -54,6 +56,7 @@ function FavoriteRecipes() {
         </button>
         <button
           type="button"
+          className="filter-btn"
           data-testid="filter-by-food-btn"
           onClick={ handleFilterFoods }
         >
@@ -62,6 +65,7 @@ function FavoriteRecipes() {
         </button>
         <button
           type="button"
+          className="filter-btn"
           data-testid="filter-by-drink-btn"
           onClick={ handleFilterDrinks }
         >
@@ -69,75 +73,83 @@ function FavoriteRecipes() {
 
         </button>
       </nav>
-      <div>
+      <div className="done-recipes-container">
         {
           recipes.length !== 0
           && recipes.map((recipe, index) => (
-            <div key={ recipe.id }>
+            <div className="recipe" key={ recipe.id }>
               <Link to={ `/${recipe.type}s/${recipe.id}` }>
-                <img
-                  className="meal_image"
-                  data-testid={ `${index}-horizontal-image` }
-                  src={ recipe.image }
-                  alt={ recipe.name }
-                />
+                <div className="done-recipe-image">
+                  <img
+                    className="image"
+                    data-testid={ `${index}-horizontal-image` }
+                    src={ recipe.image }
+                    alt={ recipe.name }
+                  />
+                </div>
               </Link>
-              {
-                recipe.type === 'food'
-                  ? (
-                    <p
-                      data-testid={ `${index}-horizontal-top-text` }
-                    >
-                      {`${recipe.nationality} - ${recipe.category}`}
+              <div className="recipe-infos">
+                {
+                  recipe.type === 'food'
+                    ? (
+                      <p
+                        data-testid={ `${index}-horizontal-top-text` }
+                      >
+                        {`${recipe.nationality} - ${recipe.category}`}
 
-                    </p>
-                  )
-                  : (
-                    <p data-testid={ `${index}-horizontal-top-text` }>
-                      {recipe.alcoholicOrNot}
+                      </p>
+                    )
+                    : (
+                      <p data-testid={ `${index}-horizontal-top-text` }>
+                        {recipe.alcoholicOrNot}
 
-                    </p>
-                  )
-              }
-              <Link to={ `/${recipe.type}s/${recipe.id}` }>
-                <h2
-                  data-testid={ `${index}-horizontal-name` }
-                  name={ recipe.type }
-                  id={ recipe.id }
-                >
-                  {recipe.name}
+                      </p>
+                    )
+                }
+                <Link to={ `/${recipe.type}s/${recipe.id}` }>
+                  <h2
+                    data-testid={ `${index}-horizontal-name` }
+                    name={ recipe.type }
+                    id={ recipe.id }
+                  >
+                    {recipe.name}
 
-                </h2>
-              </Link>
-              <button
-                type="button"
-                data-testid={ `${index}-horizontal-share-btn` }
-                src={ shareIcon }
-                name={ recipe.type }
-                value={ recipe.id }
-                onClick={ handleShareButton }
-              >
-                <img
-                  name={ recipe.type }
-                  id={ recipe.id }
-                  src={ shareIcon }
-                  alt="share icon"
-                />
+                  </h2>
+                </Link>
+                <div className="share-and-favorite-btn">
+                  <button
+                    type="button"
+                    className="share-btn"
+                    data-testid={ `${index}-horizontal-share-btn` }
+                    src={ shareIcon }
+                    name={ recipe.type }
+                    value={ recipe.id }
+                    onClick={ handleShareButton }
+                  >
+                    <img
+                      name={ recipe.type }
+                      id={ recipe.id }
+                      src={ shareIcon }
+                      alt="share icon"
+                    />
 
-              </button>
-              <button
-                type="button"
-                data-testid={ `${index}-horizontal-favorite-btn` }
-                onClick={ handleFavButton }
-                id={ recipe.id }
-                src={ blackHeart }
-              >
-                <img
-                  id={ recipe.id }
-                  src={ blackHeart }
-                  alt="black heart"
-                />
-              </button>
+                  </button>
+                  <button
+                    type="button"
+                    className="favorite-btn"
+                    data-testid={ `${index}-horizontal-favorite-btn` }
+                    onClick={ handleFavButton }
+                    id={ recipe.id }
+                    src={ blackHeart }
+                  >
+                    <img
+                      id={ recipe.id }
+                      src={ blackHeart }
+                      alt="black heart"
+                    />
+                  </button>
+                </div>
+              </div>
             </div>
           ))
         }
